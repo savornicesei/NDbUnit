@@ -1,6 +1,13 @@
 -- run this using osql -E -i sqlserver-testdb-create.sql
 
-DROP DATABASE [testdb]
+DECLARE @DBName varchar(50) = 'testdb'
+WHILE EXISTS(select NULL from sys.databases where name = @DBName )
+BEGIN
+    DECLARE @SQL varchar(max)
+    SELECT @SQL = COALESCE(@SQL,'') + 'Kill ' + Convert(varchar, SPId) + ';' FROM MASTER..SysProcesses WHERE DBId = DB_ID(@DBName) AND SPId <> @@SPId
+    EXEC(@SQL)
+    EXEC('DROP DATABASE ' + @DBName)
+END
 GO
 
 CREATE DATABASE [testdb]

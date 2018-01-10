@@ -1,0 +1,12 @@
+language: csharp
+solution: NDbUnit.sln
+
+os:
+  - linux
+  - osx
+
+matrix:
+  include:
+    dotnet: 2.0
+    mono: latest
+
