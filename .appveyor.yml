@@ -1,0 +1,45 @@
+version: 1.9.9.{build}
+
+image:
+  - Visual Studio 2015
+
+branches:
+  only:
+    - master
+    - develop
+
+matrix:
+  fast_finish: true
+
+services:
+  - mssql2008r2sp2
+  - mysql
+  - postgresql
+
+install:
+  - SET PATH=C:\Program Files\MySql\MySQL Server 5.6\bin;C:\Program Files\PostgreSQL\9.3\bin;%PATH%
+
+before_build:
+  - nuget restore
+  - choco install "msbuild-sonarqube-runner" -y
+  - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
+  - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
+
+build:
+  project: NDbUnit.build.xml
+  verbosity: minimal
+
+build_script:
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="build\Debug\TestResult.xml" }
+  - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="build\Debug\TestResult.xml" }
+  - msbuild "YourProjectName.sln"
+  - msbuild "NDbUnit.build.xml"
+  - MSBuild.SonarQube.Runner.exe end
+
+on_finish:
+  - ps: >-
+    # upload results to AppVeyor
+
+    $wc = New-Object 'System.Net.WebClient'
+
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path (Join-Path $($env:APPVEYOR_BUILD_FOLDER) \build\Debug\TestResult.xml)))
