@@ -30,9 +30,9 @@ build:
   verbosity: minimal
 
 build_script:
-  - echo $env:APPVEYOR_PULL_REQUEST_NUMBER $env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH $env:APPVEYOR_REPO_BRANCH
+  - echo %APPVEYOR_PULL_REQUEST_NUMBER% %APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH% %APPVEYOR_REPO_BRANCH%
   - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="build\Debug\TestResult.xml" }
   - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="build\Debug\TestResult.xml" }
   - msbuild "NDbUnit.sln"
   - msbuild "NDbUnit.build.xml"
-  - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=$env:SQTOKEN"
+  - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
