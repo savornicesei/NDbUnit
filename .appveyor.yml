@@ -17,17 +17,13 @@ services:
   - postgresql
 
 install:
-  - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C:\Program Files\PostgreSQL\9.3\bin;%PATH%
+  - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C      nnn:\Program Files\PostgreSQL\9.3\bin;%PATH%
 
 before_build:
   - nuget restore
   - choco install "msbuild-sonarqube-runner" -y
   - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
   - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
-
-build:
-  project: NDbUnit.build.xml
-  verbosity: minimal
 
 build_script:
   - echo %APPVEYOR_PULL_REQUEST_NUMBER% %APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH% %APPVEYOR_REPO_BRANCH%
