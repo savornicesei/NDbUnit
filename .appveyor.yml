@@ -14,7 +14,7 @@ matrix:
 services:
   - mssql2008r2sp2
   - mysql
-  - postgresql
+  - postgresql93
 
 install:
   - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C      nnn:\Program Files\PostgreSQL\9.3\bin;%PATH%
