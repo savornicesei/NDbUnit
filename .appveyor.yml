@@ -20,8 +20,10 @@ install:
   - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C:\Program Files\PostgreSQL\9.3\bin;%PATH%
 
 before_build:
-  - nuget restore
+  - nuget restore 
   - choco install "msbuild-sonarqube-runner" -y
+  - choco install "opencover" -y
+  - choco install "codecov"
   - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
   - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
 
@@ -30,5 +32,16 @@ build_script:
   - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" }
   - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" }
   - msbuild "NDbUnit.sln"
-  - msbuild "NDbUnit.build.xml"
+  - "packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" .\build\Debug\NDBbUnit.Test.dll /exclude=OracleTests /noshadow /result=.\TestResult.xml
+  - "packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" -register:user -target:"nunit-console.exe" -targetargs:".\build\Debug\NDBbUnit.Test.dll -noshadow" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml"
   - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
+
+
+build_success:
+  - ps: >-
+    # upload results to AppVeyor
+    $wc = New-Object 'System.Net.WebClient'
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\TestResult.xml))
+
+  - ps: .\codecov -f "coverage.xml" -t $enc.CCTOKEN
+  - ps: packages\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --repoToken $env:CATOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor
