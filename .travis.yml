@@ -7,6 +7,13 @@ os:
 
 matrix:
   include:
-    dotnet: 2.0
-    mono: latest
+    - dotnet: 2.0
+      mono: none
+    - mono: latest
+
+addons:
+  apt:
+    packages:
+      - mono-devel
+
 
