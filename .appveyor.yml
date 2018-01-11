@@ -22,7 +22,6 @@ install:
 before_build:
   - nuget restore 
   - choco install "msbuild-sonarqube-runner" -y
-  - choco install "opencover" -y
   - choco install "codecov"
   - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
   - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
@@ -32,6 +31,7 @@ build_script:
   - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.reportsPaths="coverage.xml" }
   - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.reportsPaths="coverage.xml" }
   - msbuild "NDbUnit.sln"
+  - dir C:\projects\ndbunit2\build\Debug
   - '"packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" .\build\Debug\NDBbUnit.Test.dll /exclude=OracleTests /noshadow /result=.\TestResult.xml'
   - '"packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" -register:user -target:"packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" -targetargs:".\build\Debug\NDbUnit.Test.dll -noshadow" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml"'
   - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
