@@ -29,11 +29,11 @@ before_build:
 
 build_script:
   - echo %APPVEYOR_PULL_REQUEST_NUMBER% %APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH% %APPVEYOR_REPO_BRANCH%
-  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" }
-  - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" }
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.reportsPaths="coverage.xml" }
+  - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.reportsPaths="coverage.xml" }
   - msbuild "NDbUnit.sln"
   - '"packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" .\build\Debug\NDBbUnit.Test.dll /exclude=OracleTests /noshadow /result=.\TestResult.xml'
-  - '"packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" -register:user -target:"packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" -targetargs:".\build\Debug\NDBbUnit.Test.dll -noshadow" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml"'
+  - '"packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" -register:user -target:"packages\NUnit.Runners.2.6.4\tools\nunit-console.exe" -targetargs:".\build\Debug\NDbUnit.Test.dll -noshadow" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml"'
   - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
 
 
