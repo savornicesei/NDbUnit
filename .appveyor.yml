@@ -1,0 +1,49 @@
+version: 1.9.9.{build}
+
+image:
+  - Visual Studio 2015
+
+branches:
+  only:
+    - master
+    - develop
+
+matrix:
+  fast_finish: true
+
+cache:
+  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+  - Lib
+  - '%LocalAppData%\NuGet\Cache'    # NuGet < v3
+  - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
+
+services:
+  - mssql2008r2sp2
+  - mysql
+  - postgresql93
+
+install:
+  - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C:\Program Files\PostgreSQL\9.3\bin;%PATH%
+
+before_build:
+  - nuget restore 
+  - choco install "msbuild-sonarqube-runner" -y
+  - choco install codecov
+  - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
+  - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
+
+build_script:
+  - echo %APPVEYOR_PULL_REQUEST_NUMBER% %APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH% %APPVEYOR_REPO_BRANCH%
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" }
+  - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.it.reportsPaths="coverage.xml" }
+  - msbuild /verbosity:quiet "NDbUnit.sln"
+  - '"packages\NUnit.Runners.2.6.4\tools\nunit-console-x86.exe" build\Debug\NDbUnit.Test.dll /exclude=OracleTests /noshadow /framework:net-4.0 /result=TestResult.xml & exit 0'
+  - '"packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" -register:user -target:"packages\NUnit.Runners.2.6.4\tools\nunit-console-x86.exe" -targetargs:"build\Debug\NDbUnit.Test.dll /exclude=OracleTests /noshadow /framework:net-4.0" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml" & exit 0'
+  - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
+
+#test: off
+
+test_script:
+  #- '"C:\ProgramData\chocolatey\lib\codecov\tools\codecov.exe" -f "coverage.xml" -t %CCTOKEN%'
+  - ps: packages\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --repoToken $env:CATOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor
+  - ps: codecov -f "coverage.xml" -t $env:CCTOKEN
