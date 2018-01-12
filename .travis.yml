@@ -14,5 +14,9 @@ addons:
   apt:
     packages:
       - mono-devel
+      
+branches:
+  only:
+  - master
 
 
