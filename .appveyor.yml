@@ -28,6 +28,11 @@ before_build:
   - nuget restore 
   - choco install "msbuild-sonarqube-runner" -y
   - choco install codecov
+  # only needed if documentation is built at build time
+  #- choco install doxygen.install
+  #- choco install graphviz
+  #- curl -fsS -o mscgen_0.20.exe http://www.mcternan.me.uk/mscgen/software/mscgen_0.20.exe
+  #- mscgen_0.20.exe /S
   - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
   - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
 

@@ -1,28 +1,14 @@
 /*
- *
- * NDbUnit
- * Copyright (C)2005 - 2011
- * http://code.google.com/p/ndbunit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-
 using System;
+using System.Collections;
+using System.Data;
 using System.IO;
 using System.Text;
-using System.Data;
-using System.Collections;
 
 namespace NDbUnit.Core
 {
@@ -36,10 +22,6 @@ namespace NDbUnit.Core
 
         private bool _initialized;
 
-        //private bool _passedconnection;
-
-        //protected IDbConnection _sqlConnection;
-
         protected DbConnectionManager<TDbConnection> ConnectionManager; 
 
         private string _xmlSchemaFile = "";
@@ -48,17 +30,6 @@ namespace NDbUnit.Core
         {
             ConnectionManager = connectionManager;
         }
-
-        //protected DbCommandBuilder(IDbConnection connection)
-        //{
-        //    _passedconnection = true;
-        //    _sqlConnection = connection;
-        //}
-
-        //protected DbCommandBuilder(string connectionString)
-        //{
-        //    _sqlConnection = GetConnection(connectionString);
-        //}
 
         public int CommandTimeOutSeconds { get; set; }
 
@@ -106,7 +77,7 @@ namespace NDbUnit.Core
 
             _dataSet.ReadXmlSchema(xmlSchema);
             // DataSet table rows RowState property is set to Added
-            // when read in from an xml file.
+            // when read in from an XML file.
             _dataSet.AcceptChanges();
 
             Hashtable ht = new Hashtable();
@@ -183,7 +154,7 @@ namespace NDbUnit.Core
                 foreach (DataTable table in _dataSet.Tables)
                 {
                     found = table.Columns.Contains(columnName);
-                    if (found == true)
+                    if (found)
                         break;
                 }
 
@@ -256,27 +227,23 @@ namespace NDbUnit.Core
             IDbCommand sqlInsertCommand = CreateDbCommand();
             foreach (DataRow dataRow in _dataTableSchema.Rows)
             {
-                if (ColumnOKToInclude(dataRow))
+                if (ColumnOKToInclude(dataRow) && !((bool)dataRow[GetIdentityColumnDesignator()])) // Not an identity column
                 {
-                    // Not an identity column.
-                    if (!((bool)dataRow[GetIdentityColumnDesignator()]))
+                    if (notFirstColumn)
                     {
-                        if (notFirstColumn)
-                        {
-                            sb.Append(", ");
-                            sbParam.Append(", ");
-                        }
-
-                        notFirstColumn = true;
-
-                        sb.Append(QuotePrefix + dataRow["ColumnName"] + QuoteSuffix);
-                        sbParam.Append(GetParameterDesignator(count));
-
-                        sqlParameter = CreateNewSqlParameter(count, dataRow);
-                        sqlInsertCommand.Parameters.Add(sqlParameter);
-
-                        ++count;
+                        sb.Append(", ");
+                        sbParam.Append(", ");
                     }
+
+                    notFirstColumn = true;
+
+                    sb.Append(QuotePrefix + dataRow["ColumnName"] + QuoteSuffix);
+                    sbParam.Append(GetParameterDesignator(count));
+
+                    sqlParameter = CreateNewSqlParameter(count, dataRow);
+                    sqlInsertCommand.Parameters.Add(sqlParameter);
+
+                    ++count;
                 }
             }
 
@@ -455,7 +422,6 @@ namespace NDbUnit.Core
             return String.Format("@p{0}", count);
         }
 
-        //private DataTable GetSchemaTable(IDbCommand sqlSelectCommand)
         protected virtual DataTable GetSchemaTable(IDbCommand sqlSelectCommand)
         {
             DataTable dataTableSchema = new DataTable();
@@ -481,12 +447,9 @@ namespace NDbUnit.Core
             finally
             {
                 //Only close connection if connection was not passed to constructor
-                if (!ConnectionManager.HasExternallyManagedConnection)
+                if (!ConnectionManager.HasExternallyManagedConnection && connection.State != ConnectionState.Closed)
                 {
-                    if (connection.State != ConnectionState.Closed)
-                    {
-                        connection.Close();
-                    }
+                    connection.Close();
                 }
             }
 

@@ -1,28 +1,14 @@
 /*
- *
- * NDbUnit
- * Copyright (C)2005 - 2011
- * http://code.google.com/p/ndbunit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-
 using System;
+using System.Collections.Specialized;
+using System.Data;
 using System.Data.Common;
 using System.IO;
-using System.Data;
-using System.Collections.Specialized;
 
 namespace NDbUnit.Core
 {
@@ -40,10 +26,6 @@ namespace NDbUnit.Core
     /// </summary>
     public abstract class NDbUnitTest<TDbConnection> : INDbUnitTest where TDbConnection : class, IDbConnection, new()
     {
-        //protected IDbConnection Connection;
-
-        //private readonly string _connectionString;
-
         private DataSet _dataSet;
 
         private IDbCommandBuilder _dbCommandBuilder;
@@ -51,8 +33,6 @@ namespace NDbUnit.Core
         private readonly IDbOperation _dbOperation;
 
         private bool _initialized;
-
-        //private readonly bool _passedconnection;
 
         protected DbConnectionManager<TDbConnection> ConnectionManager;
 
@@ -79,7 +59,6 @@ namespace NDbUnit.Core
         {
             ConnectionManager = new DbConnectionManager<TDbConnection>(connection);
             _dbOperation = CreateDbOperation();
-
         }
 
         public int CommandTimeOut { get; set; }
@@ -365,10 +344,6 @@ namespace NDbUnit.Core
 
         protected abstract IDbDataAdapter CreateDataAdapter(IDbCommand command);
 
-        //protected abstract IDbCommandBuilder CreateDbCommandBuilder(string connectionString);
-
-        //protected abstract IDbCommandBuilder CreateDbCommandBuilder(IDbConnection connection);
-
         protected abstract IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<TDbConnection> connectionManager);
 
         protected abstract IDbOperation CreateDbOperation();
@@ -432,7 +407,7 @@ namespace NDbUnit.Core
         {
             if (string.IsNullOrEmpty(xmlFile))
             {
-                throw new ArgumentException("Xml file cannot be null or empty", "xmlFile");
+                throw new ArgumentException("XML file cannot be null or empty", "xmlFile");
             }
 
             if (XmlDataFileHasNotYetBeenRead(xmlFile))
@@ -464,9 +439,36 @@ namespace NDbUnit.Core
             return _xmlSchemaFile.ToLower() != xmlSchemaFile.ToLower();
         }
 
+        #region IDisposable interface
+
+        // Flag: Has Dispose already been called?
+        bool disposed = false;
+
         public void Dispose()
         {
-            ConnectionManager.ReleaseConnection();
+            // Dispose of unmanaged resources.
+            Dispose(true);
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
         }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                // Free any other managed objects here.
+                ConnectionManager.ReleaseConnection();
+            }
+
+            // Free any unmanaged objects here.
+
+            disposed = true;
+        }
+
+        #endregion
     }
 }

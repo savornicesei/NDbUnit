@@ -1,28 +1,12 @@
 /*
- *
- * NDbUnit
- * Copyright (C)2005 - 2011
- * http://code.google.com/p/ndbunit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-
-using System;
-using System.Data;
-using System.Collections.Generic;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 
 
@@ -35,8 +19,9 @@ namespace NDbUnit.Core
     /// </summary>
     public class DataSetTableIterator : CollectionBase, IEnumerable<DataTable>, IEnumerator
     {
+        //TODO: Refactor.. the reverse sort is unnecessary now that constraints are dropped prior to inserts
         private int _index = 0;
-        private bool _iterateInReverse;
+        private readonly bool _iterateInReverse;
 
 
         /// <summary>
@@ -47,6 +32,19 @@ namespace NDbUnit.Core
         {
             _iterateInReverse = false;
             BuildTableList(dataSet);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataSetTableIterator"/> class.
+        /// </summary>
+        /// <param name="dataSet">The data set.</param>
+        /// <param name="iterateInReverse">if set to <c>true</c> [iterate in reverse].</param>
+        public DataSetTableIterator(DataSet dataSet, bool iterateInReverse)
+        {
+            _iterateInReverse = iterateInReverse;
+            BuildTableList(dataSet);
+
+            ReverseListIfNeeded();
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace NDbUnit.Core
         /// </summary>
         private void ReverseListIfNeeded()
         {
-            if (_iterateInReverse == true)
+            if (_iterateInReverse)
             {
                 ArrayList tempList = new ArrayList();
 
@@ -101,18 +99,6 @@ namespace NDbUnit.Core
 
             }
         }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataSetTableIterator"/> class.
-        /// </summary>
-        /// <param name="dataSet">The data set.</param>
-        /// <param name="iterateInReverse">if set to <c>true</c> [iterate in reverse].</param>
-        public DataSetTableIterator(DataSet dataSet, bool iterateInReverse)
-        {
-            _iterateInReverse = iterateInReverse;
-            BuildTableList(dataSet);
-
-            ReverseListIfNeeded();
-        }
 
         /// <summary>
         /// Iterate over tables in dataset and at them to the internal list.
@@ -124,65 +110,6 @@ namespace NDbUnit.Core
             {
                 List.Add(table);
             }
-
-            //TODO: Refactor.. the reverse sort is unnecessary now that constraints are dropped prior to inserts
-
-            //int count = 0;
-
-            //// Add tables with no parent keys
-            //foreach (DataTable table in tables)
-            //{
-            //    if (ShouldAddToList(table))
-            //    {
-            //        List.Add(table);
-            //        count++;
-            //    }
-            //}
-
-            //if (count > 0)
-            //{
-            //    AddTablesToList(tables);
-            //}
-
-        }
-
-        /// <summary>
-        /// Adds a table to the list if
-        ///     - It hasn't already been added
-        ///     - It has no relations to parent tables where the parent table isn't in the list.
-        /// </summary>
-        /// <param name="table">DataTable to check if it meets conditions to add to list.</param>
-        /// <returns>True if should add, otherwise false.</returns>
-        private bool ShouldAddToList(DataTable table)
-        {
-            if (List.Contains(table))
-            {
-                return false;
-            }
-
-            foreach (Constraint constraint in table.Constraints)
-            {
-                ForeignKeyConstraint foreignKey = constraint as ForeignKeyConstraint;
-
-                if (foreignKey != null)
-                {
-                    if (table.TableName.Equals(foreignKey.RelatedTable.TableName))
-                    {
-                        // do nothing because this is a self referencing parent
-                    }
-                    else if (List.Contains(foreignKey.RelatedTable))
-                    {
-                        // Because the parent has already been added, this constraint can be ignored.
-                        // Don't return true as there can be other constraints that prevent this table from being added.
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         ///<summary>

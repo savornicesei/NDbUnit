@@ -1,26 +1,11 @@
 /*
- *
- * NDbUnit
- * Copyright (C)2005 - 2011
- * http://code.google.com/p/ndbunit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-
-using System;
-using System.Data;
 using System.Collections;
+using System.Data;
 using System.Data.Common;
 
 namespace NDbUnit.Core
@@ -186,23 +171,17 @@ namespace NDbUnit.Core
         {
             IDbTransaction sqlTransaction = dbTransaction;
 
-            //DisableTableConstraints(dataTable, dbTransaction);
-
             IDbDataAdapter sqlDataAdapter = CreateDbDataAdapter();
             sqlDataAdapter.InsertCommand = dbCommand;
             sqlDataAdapter.InsertCommand.Connection = sqlTransaction.Connection;
             sqlDataAdapter.InsertCommand.Transaction = sqlTransaction;
 
             ((DbDataAdapter)sqlDataAdapter).Update(dataTable);
-
-            //EnableTableConstraints(dataTable, dbTransaction);
         }
 
         protected virtual void OnInsertIdentity(DataTable dataTable, IDbCommand dbCommand, IDbTransaction dbTransaction)
         {
             IDbTransaction sqlTransaction = dbTransaction;
-
-            //DisableTableConstraints(dataTable, dbTransaction);
 
             foreach (DataColumn column in dataTable.Columns)
             {
@@ -249,8 +228,6 @@ namespace NDbUnit.Core
                         break;
                     }
                 }
-
-                //EnableTableConstraints(dataTable, dbTransaction);
             }
         }
 
@@ -309,18 +286,12 @@ namespace NDbUnit.Core
             sqlDataAdapter.UpdateCommand.Connection = sqlTransaction.Connection;
             sqlDataAdapter.UpdateCommand.Transaction = sqlTransaction;
 
-            //DisableTableConstraints(dsUpdate.Tables[tableName], dbTransaction);
-
             ((DbDataAdapter)sqlDataAdapter).Update(dsUpdate, tableName);
-
-            //EnableTableConstraints(dsUpdate.Tables[tableName], dbTransaction);
         }
 
         protected virtual void OnUpdate(DataSet ds, IDbCommandBuilder dbCommandBuilder, IDbTransaction dbTransaction, string tableName)
         {
             IDbTransaction sqlTransaction = dbTransaction;
-
-            //DisableTableConstraints(ds.Tables[tableName], dbTransaction);
 
             IDbDataAdapter sqlDataAdapter = CreateDbDataAdapter();
             sqlDataAdapter.UpdateCommand = dbCommandBuilder.GetUpdateCommand(tableName);
@@ -328,8 +299,6 @@ namespace NDbUnit.Core
             sqlDataAdapter.UpdateCommand.Transaction = sqlTransaction;
 
             ((DbDataAdapter)sqlDataAdapter).Update(ds, tableName);
-
-            //EnableTableConstraints(ds.Tables[tableName], dbTransaction);
         }
 
         private void deleteCommon(DataSet ds, IDbCommandBuilder dbCommandBuilder, IDbTransaction dbTransaction,

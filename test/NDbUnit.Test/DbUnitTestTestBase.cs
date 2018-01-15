@@ -1,32 +1,18 @@
 /*
- *
- * NDbUnit
- * Copyright (C)2005 - 2011
- * http://code.google.com/p/ndbunit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-
-using System;
-using System.Data;
-using System.IO;
 using NDbUnit.Core;
 using NUnit.Framework;
 using Rhino.Mocks;
-using Is = Rhino.Mocks.Constraints.Is;
-using AssertIs = NUnit.Framework.Is;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using AssertIs = NUnit.Framework.Is;
+using Is = Rhino.Mocks.Constraints.Is;
 
 namespace NDbUnit.Test.Common
 {
@@ -65,11 +51,11 @@ namespace NDbUnit.Test.Common
             _mockDataFileStream = new FileStream(GetXmlFilename(), FileMode.Open, FileAccess.Read, FileShare.Read);
 
             _mocker = new MockRepository();
-            _mockDbCommandBuilder = _mocker.CreateMock<IDbCommandBuilder>();
-            _mockDbOperation = _mocker.CreateMock<IDbOperation>();
+            _mockDbCommandBuilder = _mocker.StrictMock<IDbCommandBuilder>();
+            _mockDbOperation = _mocker.StrictMock<IDbOperation>();
             _nDbUnitTestStub = GetUnitTestStub();
-            _mockConnection = _mocker.CreateMock<IDbConnection>();
-            _mockTransaction = _mocker.CreateMock<IDbTransaction>();
+            _mockConnection = _mocker.StrictMock<IDbConnection>();
+            _mockTransaction = _mocker.StrictMock<IDbTransaction>();
         }
 
         [TearDown]
@@ -107,7 +93,7 @@ namespace NDbUnit.Test.Common
             dummyDS.ReadXmlSchema(ReadOnlyStreamFromFilename(GetXmlSchemaFilename()));
             SetupResult.For(_mockDbCommandBuilder.GetSchema()).Return(dummyDS);
             SetupResult.For(_mockDbCommandBuilder.Connection).Return(_mockConnection);
-            //_mockConnection.Open();
+
             SetupResult.For(_mockConnection.BeginTransaction()).Return(_mockTransaction);
             _mockDbOperation.Update(dummyDS, _mockDbCommandBuilder, _mockTransaction);
             LastCall.IgnoreArguments().Constraints(Is.TypeOf<DataSet>(), Is.Equal(_mockDbCommandBuilder), Is.Equal(_mockTransaction));

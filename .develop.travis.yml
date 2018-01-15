@@ -1,0 +1,22 @@
+language: csharp
+solution: NDbUnit.sln
+
+os:
+  - linux
+  #- osx
+
+matrix:
+  include:
+    - dotnet: 2.1.4
+    - mono: latest
+
+addons:
+  apt:
+    packages:
+      - mono-devel
+      
+branches:
+  only:
+  - develop
+
+

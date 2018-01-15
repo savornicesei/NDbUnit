@@ -1,30 +1,16 @@
 ﻿/*
- *
- * NDbUnit
- * Copyright (C)2005 - 2011
- * http://code.google.com/p/ndbunit
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-
-using NDbUnit.Core.SqlLite;
-using System.Data.SQLite;
-using System.Data;
-using System.IO;
 using NDbUnit.Core;
-using System.Diagnostics;
+using NDbUnit.Core.SqlLite;
 using NUnit.Framework;
+using System.Data;
+using System.Data.SQLite;
+using System.Diagnostics;
+using System.IO;
 
 namespace NDbUnit.Test.SqlLite_InMemory
 {
@@ -34,8 +20,8 @@ namespace NDbUnit.Test.SqlLite_InMemory
     {
         private SQLiteConnection _connection;
 
-        [TestFixtureSetUp]
-        public void _TestFixtureSetUp()
+        [OneTimeSetUp]
+        public void _OneTimeSetUp()
         {
             _connection = new SQLiteConnection(DbConnection.SqlLiteInMemConnectionString);
             ExecuteSchemaCreationScript();

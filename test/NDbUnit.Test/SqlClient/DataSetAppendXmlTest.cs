@@ -1,4 +1,10 @@
-﻿using NUnit.Framework;
+﻿/*
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
+ *
+ */
+using NUnit.Framework;
 
 namespace NDbUnit.Test.SqlClient
 {

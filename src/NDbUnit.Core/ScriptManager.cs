@@ -1,4 +1,9 @@
-using System;
+/*
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
+ *
+ */
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,9 +12,9 @@ namespace NDbUnit.Core
 {
     public class ScriptManager
     {
-        private IFileSystemService _fileSystem;
+        private readonly IFileSystemService _fileSystem;
 
-        private IList<FileInfo> _scripts = new List<FileInfo>();
+        private readonly IList<FileInfo> _scripts = new List<FileInfo>();
 
         public ScriptManager(IFileSystemService fileSystem)
         {

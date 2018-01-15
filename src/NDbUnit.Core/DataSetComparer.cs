@@ -1,13 +1,19 @@
-﻿using System;
+﻿/*
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
+ *
+ */
+
+using KellermanSoftware.CompareNetObjects;
+using KellermanSoftware.CompareNetObjects.TypeComparers;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Xml.XPath;
-using KellermanSoftware.CompareNetObjects;
-using KellermanSoftware.CompareNetObjects.TypeComparers;
 
 namespace NDbUnit.Core
 {
@@ -159,7 +165,7 @@ namespace NDbUnit.Core
         }
 
         /// <summary>
-        /// Compare two datatables
+        /// Compare two data tables
         /// </summary>
         public override void CompareType(CompareParms parms)
         {
@@ -178,7 +184,7 @@ namespace NDbUnit.Core
             if (parms.Config.MembersToInclude.Count == 0 && parms.Config.MembersToIgnore.Contains(dataTable1.TableName))
                 return;
 
-            //There must be the same amount of rows in the datatable
+            //There must be the same amount of rows in the data table
             if (dataTable1.Rows.Count != dataTable2.Rows.Count)
             {
                 Difference difference = new Difference
@@ -254,9 +260,6 @@ namespace NDbUnit.Core
 
 
             RootComparer.Compare(childParms);
-
-            if (parms.Result.ExceededDifferences)
-                return;
         }
     }
 

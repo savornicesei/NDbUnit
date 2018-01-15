@@ -1,7 +1,13 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * NDbUnit2
+ * https://github.com/savornicesei/NDbUnit2
+ * This source code is released under the Apache 2.0 License; see the accompanying license file.
+ *
+ */
 using NDbUnit.Core;
-using System.Data;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Data;
 
 namespace NDbUnit.Test
 {
@@ -14,8 +20,8 @@ namespace NDbUnit.Test
 
         private DataSetTableIterator _reverseIterator;
 
-        [TestFixtureSetUp]
-        public void _TestFixtureSetup()
+        [OneTimeSetUp]
+        public void _OneTimeSetUp()
         {
             DataSet dataSet = new DataSet();
 

@@ -6,6 +6,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+.vs
+.sonar*
 
 # Build results
 [Dd]ebug/
@@ -182,3 +184,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+#Jekyll
+_site
+.sass-cache
+.jekyll-metadata
