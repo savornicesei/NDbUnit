@@ -1,7 +1,7 @@
 version: 1.9.9.{build}
 
 image:
-  - Visual Studio 2015
+  - Visual Studio 2017
 
 branches:
   only:
@@ -28,6 +28,11 @@ before_build:
   - nuget restore 
   - choco install "msbuild-sonarqube-runner" -y
   - choco install codecov
+  # only needed if documentation is built at build time
+  #- choco install doxygen.install
+  #- choco install graphviz
+  #- curl -fsS -o mscgen_0.20.exe http://www.mcternan.me.uk/mscgen/software/mscgen_0.20.exe
+  #- mscgen_0.20.exe /S
   - '"%APPVEYOR_BUILD_FOLDER%\ci-database-setup-scripts.cmd"'
   - SET NUNIT_RUNNER_OPTIONS=/exclude=OracleTests
 
@@ -40,9 +45,6 @@ build_script:
   - '"packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" -register:user -target:"packages\NUnit.Runners.2.6.4\tools\nunit-console-x86.exe" -targetargs:"build\Debug\NDbUnit.Test.dll /exclude=OracleTests /noshadow /framework:net-4.0" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml" & exit 0'
   - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
 
-#test: off
-
 test_script:
-  #- '"C:\ProgramData\chocolatey\lib\codecov\tools\codecov.exe" -f "coverage.xml" -t %CCTOKEN%'
   - ps: packages\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml --repoToken $env:CATOKEN --useRelativePaths --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_BUILD_NUMBER --serviceName appveyor
   - ps: codecov -f "coverage.xml" -t $env:CCTOKEN
