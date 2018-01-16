@@ -17,12 +17,16 @@ cache:
   - '%LocalAppData%\NuGet\v3-cache' # NuGet v3
 
 services:
-  - mssql2008r2sp2
+  # Not existing in VS2017 AppVeyor image
+  #- mssql2008r2sp2
+  #- mysql
+  #- postgresql93
+  - mssql2012sp1
   - mysql
-  - postgresql93
+  - postgresql95
 
 install:
-  - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C:\Program Files\PostgreSQL\9.3\bin;%PATH%
+  - SET PATH=C:\Program Files\MySql\MySQL Server 5.7\bin;C:\Program Files\PostgreSQL\9.5\bin;%PATH%
 
 before_build:
   - nuget restore 
