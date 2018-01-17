@@ -21,7 +21,7 @@ services:
   #- mssql2008r2sp2
   #- mysql
   #- postgresql93
-  - mssql2012sp1rs
+  - mssql2014
   - mysql
   - postgresql95
 
