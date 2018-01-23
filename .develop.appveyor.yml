@@ -46,6 +46,8 @@ build_script:
   - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.it.reportsPaths="coverage.xml" }
   - msbuild /verbosity:quiet "NDbUnit.sln"
   - dir
+  - dir ..
+  - dir ../packages
   - '"..\packages\nunit.consolerunner\3.7.0\tools\nunit3-console.exe" test\NDbUnit.Test\build\Debug\net452\NDbUnit.Test.dll /exclude=OracleTests /noshadow /framework:net-4.5 /result=TestResult.xml & exit 0'
   - '"..\packages\opencover\4.6.519\tools\OpenCover.Console.exe" -register:user -target:"..\packages\nunit.consolerunner\3.7.0\tools\nunit3-console.exe" -targetargs:"test\NDbUnit.Test\build\Debug\net452\NDbUnit.Test.dll /exclude=OracleTests /noshadow /framework:net-4.5" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml" & exit 0'
   - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"
