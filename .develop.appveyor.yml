@@ -42,15 +42,13 @@ before_build:
 
 build_script:
   - dotnet nuget locals global-packages -l
+  - dotnet clean
   #- nuget restore NDbUnit.sln -Recursive -ConfigFile NuGet.Config
   - echo %APPVEYOR_PULL_REQUEST_NUMBER% %APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH% %APPVEYOR_REPO_BRANCH%
   - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.analysis.mode=preview" /d:"sonar.github.pullRequest=$env:APPVEYOR_PULL_REQUEST_NUMBER" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2"  /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.target=$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" }
   - ps: if (-Not $env:APPVEYOR_PULL_REQUEST_NUMBER) { MSBuild.SonarQube.Runner.exe begin /k:"ndbunit2" /d:"sonar.organization=savornicesei-github" /d:"sonar.host.url=https://sonarcloud.io" /d:"sonar.login=$env:SQTOKEN" /d:"sonar.github.repository=https://github.com/savornicesei/NDbUnit2" /d:"sonar.github.oauth=$env:GHTOKEN" /d:"sonar.branch.name=$env:APPVEYOR_REPO_BRANCH" /d:sonar.cs.nunit.reportsPaths="TestResult.xml" /d:sonar.cs.opencover.it.reportsPaths="coverage.xml" }
   #- msbuild /verbosity:quiet "NDbUnit.sln"
   - dotnet build -f net452 -v n "NDbUnit.sln"
-  - dir
-  - dir ..
-  - dir ..\packages
   - '"..\packages\nunit.consolerunner\3.7.0\tools\nunit3-console.exe" test\NDbUnit.Test\bin\Debug\net452\NDbUnit.Test.dll --where "cat != OracleTests" --framework=net-4.5 --result=TestResult.xml & exit 0'
   - '"..\packages\opencover\4.6.519\tools\OpenCover.Console.exe" -register:user -target:"..\packages\nunit.consolerunner\3.7.0\tools\nunit3-console.exe" -targetargs:"test\NDbUnit.Test\bin\Debug\net452\NDbUnit.Test.dll --where \"cat != OracleTests\" --framework=net-4.5" -filter:"+[NDbUnit.*]* -[NDbUnit.Test]*" -output:"coverage.xml" & exit 0'
   - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=%SQTOKEN%"

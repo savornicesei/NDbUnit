@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NDbUnit.Core", "src\NDbUnit.Core\NDbUnit.Core.csproj", "{1DF4AF66-B642-45B1-8899-224477780E4A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Build", "1. Build", "{1133CD5F-671D-4110-BC1D-0D90F52CA090}"
+	ProjectSection(SolutionItems) = preProject
+		.appveyor.yml = .appveyor.yml
+		.develop.appveyor.yml = .develop.appveyor.yml
+		.travis.yml = .travis.yml
+		NuGet.config = NuGet.config
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Src", "2. Src", "{7DD0FF84-8EAD-47F0-A208-021413504642}"
 EndProject

@@ -9,11 +9,11 @@ using System.Runtime.Serialization;
 
 namespace NDbUnit.Core
 {
-    /// <summary>
-    /// The base class exception of all exceptions thrown by objects
-    /// in NDbUnit.
-    /// </summary>
-    [Serializable]
+	/// <summary>
+	/// The base class exception of all exceptions thrown by objects
+	/// in NDbUnit.
+	/// </summary>
+	[Serializable]
 	public class NDbUnitException : Exception
 	{
 		/// <summary>
