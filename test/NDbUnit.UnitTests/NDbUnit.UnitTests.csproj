@@ -1,14 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../ndbunit.targets.xml" />
-  
+  <Import Project="../../src/ndbunit.targets.xml" />
+
   <PropertyGroup>
-    <TargetFrameworks>net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
-    <PackageId>NDbUnit2.SqlServerCe</PackageId>
+    <PackageId>NDbUnit2.Test</PackageId>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Mark the project as being a test project -->
+    <SonarQubeTestProject>true</SonarQubeTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="docs\**" />
+    <EmbeddedResource Remove="docs\**" />
+    <None Remove="docs\**" />
+  </ItemGroup>
 
   <!-- common NuGet package refs -->
   <ItemGroup>
+    <PackageReference Include="CompareNETObjects" Version="4.3.0" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
+    <PackageReference Include="Moq" Version="4.8.1" />
+    <PackageReference Include="FluentAssertions" Version="5.1.2" />
   </ItemGroup>
 
   <!-- .NET Standard 2.0 references, compilation flags and build options -->
@@ -34,18 +50,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
-    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1">
-      <IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\NDbUnit.Core\NDbUnit.Core.csproj" />
-  </ItemGroup>
-  
+
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
- 
 </Project>

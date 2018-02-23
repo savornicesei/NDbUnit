@@ -2,7 +2,7 @@
   <Import Project="../../src/ndbunit.targets.xml" />
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
     <PackageId>NDbUnit2.Test</PackageId>
   </PropertyGroup>
@@ -17,8 +17,37 @@
     <EmbeddedResource Remove="docs\**" />
     <None Remove="docs\**" />
   </ItemGroup>
-  
+
+  <!-- common NuGet package refs -->
   <ItemGroup>
+    <PackageReference Include="CompareNETObjects" Version="4.3.0" />
+    <PackageReference Include="coveralls.net" Version="0.7.0" />
+    <PackageReference Include="MySql.Data" Version="6.10.6" />
+    <PackageReference Include="Npgsql" Version="3.2.6" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
+    <PackageReference Include="OpenCover" Version="4.6.519" />
+    <PackageReference Include="RhinoMocks" Version="3.6.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.107" />
+    <!-- <PackageReference Include="Moq" Version="4.8.1" />
+    <PackageReference Include="FluentAssertions" Version="5.1.2" /> -->
+  </ItemGroup>
+
+  <!-- .NET Standard 2.0 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
+  </PropertyGroup>
+
+  <!-- .NET 4.5.2 references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <DefineConstants>NET452</DefineConstants>
+  </PropertyGroup>
+
+  <!-- .NET framework references, compilation flags and build options -->
+  <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
+    <DefineConstants>NETFULL</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -27,38 +56,35 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <!--<ProjectReference Include="..\..\src\NDbUnit.Core\NDbUnit.Core.csproj" />-->
-    <ProjectReference Include="..\..\src\NDbUnit.MySql\NDbUnit.MySql.csproj" />
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
     <ProjectReference Include="..\..\src\NDbUnit.OleDb\NDbUnit.OleDb.csproj" />
     <ProjectReference Include="..\..\src\NDbUnit.OracleClient\NDbUnit.OracleClient.csproj" />
+    <ProjectReference Include="..\..\src\NDbUnit.SqlServerCe\NDbUnit.SqlServerCe.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
+    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1">
+      <IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NDbUnit.MySql\NDbUnit.MySql.csproj" />
     <ProjectReference Include="..\..\src\NDbUnit.Postgresql\NDbUnit.Postgresql.csproj" />
     <ProjectReference Include="..\..\src\NDbUnit.SqlClient\NDbUnit.SqlClient.csproj" />
     <ProjectReference Include="..\..\src\NDbUnit.SqlLite\NDbUnit.SqlLite.csproj" />
-    <ProjectReference Include="..\..\src\NDbUnit.SqlServerCe\NDbUnit.SqlServerCe.csproj" />
   </ItemGroup>
   
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="CompareNETObjects" Version="4.3.0" />
-    <PackageReference Include="coveralls.net" Version="0.7.0" />
-    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1">
-      <IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="MySql.Data" Version="6.10.5" />
-    <PackageReference Include="Npgsql" Version="3.2.6" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
-    <PackageReference Include="OpenCover" Version="4.6.519" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
-    <PackageReference Include="RhinoMocks" Version="3.6.1" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.106" />
-  </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Remove="OleDb\**" />
+    <Compile Remove="OracleClient\**" />
+    <Compile Remove="SqlServerCe\**" />
+  </ItemGroup>
+  
   <ItemGroup>
     <Content Include="Scripts\postgres-testdb-create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -155,7 +181,6 @@
     </Content>
     <Content Include="Xml\OleDb\UserDS.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>UserDS.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

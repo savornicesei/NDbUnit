@@ -1,5 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<PropertyGroup>
+		<!-- <TargetFramework>netstandard2.0</TargetFramework>-->
+		<!-- <TargetFramework>net452</TargetFramework>-->
+	</PropertyGroup>
+	<PropertyGroup>
 		<CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
 		<ProjectMajorVersion>2</ProjectMajorVersion>
 		<ProjectMinorVersion>0</ProjectMinorVersion>

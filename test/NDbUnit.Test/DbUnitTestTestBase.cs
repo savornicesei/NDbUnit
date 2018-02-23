@@ -13,6 +13,8 @@ using System.Data;
 using System.IO;
 using AssertIs = NUnit.Framework.Is;
 using Is = Rhino.Mocks.Constraints.Is;
+//using Moq;
+//using FluentAssertions;
 
 namespace NDbUnit.Test.Common
 {
@@ -51,11 +53,11 @@ namespace NDbUnit.Test.Common
             _mockDataFileStream = new FileStream(GetXmlFilename(), FileMode.Open, FileAccess.Read, FileShare.Read);
 
             _mocker = new MockRepository();
-            _mockDbCommandBuilder = _mocker.StrictMock<IDbCommandBuilder>();
-            _mockDbOperation = _mocker.StrictMock<IDbOperation>();
+            _mockDbCommandBuilder = _mocker.CreateMock<IDbCommandBuilder>();
+            _mockDbOperation = _mocker.CreateMock<IDbOperation>();
             _nDbUnitTestStub = GetUnitTestStub();
-            _mockConnection = _mocker.StrictMock<IDbConnection>();
-            _mockTransaction = _mocker.StrictMock<IDbTransaction>();
+            _mockConnection = _mocker.CreateMock<IDbConnection>();
+            _mockTransaction = _mocker.CreateMock<IDbTransaction>();
         }
 
         [TearDown]

@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using NDbUnit.Core.Extensions;
 
 namespace NDbUnit.Core
 {
@@ -72,7 +73,11 @@ namespace NDbUnit.Core
         /// <returns></returns>
         public override bool IsTypeMatch(Type type1, Type type2)
         {
+#if NETSTANDARD
+            return type1.IsDataset() && type2.IsDataset();
+#else
             return TypeHelper.IsDataset(type1) && TypeHelper.IsDataset(type2);
+#endif
         }
 
         /// <summary>
@@ -161,7 +166,11 @@ namespace NDbUnit.Core
         /// <returns></returns>
         public override bool IsTypeMatch(Type type1, Type type2)
         {
+#if NETSTANDARD
+            return type1.IsDataTable() && type2.IsDataTable();
+#else
             return TypeHelper.IsDataTable(type1) && TypeHelper.IsDataTable(type2);
+#endif
         }
 
         /// <summary>
