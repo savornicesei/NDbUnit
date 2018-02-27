@@ -5,7 +5,7 @@
  *
  */
 using System.Data;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 namespace NDbUnit.Core.SqlLite
 {
@@ -13,12 +13,12 @@ namespace NDbUnit.Core.SqlLite
     {
         protected override IDbDataAdapter CreateDbDataAdapter()
         {
-            return new SQLiteDataAdapter();
+            return new SQliteDataAdapter();
         }
 
         protected override IDbCommand CreateDbCommand(string cmdText)
         {
-            return new SQLiteCommand(cmdText);
+            return new SqliteCommand(cmdText);
         }
 
         /// <summary>

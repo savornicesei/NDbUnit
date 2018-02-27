@@ -6,28 +6,28 @@
  */
 using System;
 using System.Data;
-using System.Data.SQLite;
+using Microsoft.Data.Sqlite;
 
 namespace NDbUnit.Core.SqlLite
 {
-    public class SqlLiteDbUnitTest : NDbUnitTest<SQLiteConnection>
+    public class SqlLiteDbUnitTest : NDbUnitTest<SqliteConnection>
     {
         public SqlLiteDbUnitTest(string connectionString)
             : base(connectionString)
         {
         }
 
-        public SqlLiteDbUnitTest(SQLiteConnection connection)
+        public SqlLiteDbUnitTest(SqliteConnection connection)
             : base(connection)
         {
         }
 
         protected override IDbDataAdapter CreateDataAdapter(IDbCommand command)
         {
-            return new SQLiteDataAdapter((SQLiteCommand)command);
+            return new SQLiteDataAdapter((SqliteCommand)command);
         }
 
-        protected override IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<SQLiteConnection> connectionManager)
+        protected override IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<SqliteConnection> connectionManager)
         {
             return new SqlLiteDbCommandBuilder(connectionManager);
         }
@@ -56,7 +56,7 @@ namespace NDbUnit.Core.SqlLite
         {
         }
 
-        public SqlLiteUnitTest(SQLiteConnection connection) : base(connection)
+        public SqlLiteUnitTest(SqliteConnection connection) : base(connection)
         {
         }
     }
