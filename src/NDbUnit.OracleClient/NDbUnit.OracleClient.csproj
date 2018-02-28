@@ -3,7 +3,6 @@
   
   <PropertyGroup>
     <TargetFrameworks>net452</TargetFrameworks>
-    <Configurations>Debug;Release</Configurations>
     <PackageId>NDbUnit2.Oracle</PackageId>
   </PropertyGroup>
 
@@ -12,21 +11,16 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
   </ItemGroup>
 
-  <!-- .NET Standard 2.0 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
+  <!-- .NET Standard 2.0 references and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+  </ItemGroup>
 
-  <!-- .NET 4.5.2 references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
-    <DefineConstants>NET452</DefineConstants>
-  </PropertyGroup>
+  <!-- .NET 4.5.2 references and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
+  </ItemGroup>
 
-  <!-- .NET framework references, compilation flags and build options -->
-  <PropertyGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
-    <DefineConstants>NETFULL</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0'">
+  <!-- .NET framework references and build options -->
+  <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />

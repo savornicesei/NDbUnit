@@ -1,29 +1,40 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<!-- <TargetFramework>netstandard2.0</TargetFramework>-->
-		<!-- <TargetFramework>net452</TargetFramework>-->
-	</PropertyGroup>
-	<PropertyGroup>
-		<CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
-		<ProjectMajorVersion>2</ProjectMajorVersion>
-		<ProjectMinorVersion>0</ProjectMinorVersion>
-		<ProjectPatchVersion>0</ProjectPatchVersion>
-	</PropertyGroup>
-	<PropertyGroup>
-		<Authors>Avornicesei Simona</Authors>
-		<Company></Company>
-		<Product>NDbUnit2</Product>
-		<PackageId>NDbUnit2</PackageId>
-		<AssemblyVersion>$(ProjectMajorVersion).$(ProjectMinorVersion).$(ProjectPatchVersion)</AssemblyVersion>
-		<FileVersion>$(ProjectMajorVersion).$(ProjectMinorVersion).$(ProjectPatchVersion)</FileVersion>
-		<NeutralLanguage>en</NeutralLanguage>
-		<Description>A revived .NET library for managing database state during unit testing, with roots in NDbUnit project</Description>
-		<Copyright>Copyright © $(CurrentYear)</Copyright>
-		<PackageLicenseUrl>https://github.com/savornicesei/NDbUnit2/blob/master/LICENSE</PackageLicenseUrl>
-		<PackageProjectUrl>https://github.com/savornicesei/NDbUnit2</PackageProjectUrl>
-		<PackageIconUrl></PackageIconUrl>
-		<RepositoryUrl>https://github.com/savornicesei/NDbUnit2</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<PackageTags>ndbunit unit-tests database integration-tests</PackageTags>
-	</PropertyGroup>
+  <!-- build targets -->
+  <PropertyGroup>
+    <TargetFrameworks>net452;netstandard2.0;</TargetFrameworks>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <!-- constants -->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>NETSTANDARD2_0;NETCORE;NETSTANDARD;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <DefineConstants>NET452;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <!-- project version and infos required for NuGet packaging -->
+  <PropertyGroup>
+    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+    <ProjectMajorVersion>2</ProjectMajorVersion>
+    <ProjectMinorVersion>0</ProjectMinorVersion>
+    <ProjectPatchVersion>0</ProjectPatchVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Avornicesei Simona</Authors>
+    <Company></Company>
+    <Product>NDbUnit2</Product>
+    <PackageId>NDbUnit2</PackageId>
+    <AssemblyVersion>$(ProjectMajorVersion).$(ProjectMinorVersion).$(ProjectPatchVersion)</AssemblyVersion>
+    <FileVersion>$(ProjectMajorVersion).$(ProjectMinorVersion).$(ProjectPatchVersion)</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>A revived .NET library for managing database state during unit testing, with roots in NDbUnit and DbUnit projects</Description>
+    <Copyright>Copyright © $(CurrentYear)</Copyright>
+    <PackageLicenseUrl>https://github.com/savornicesei/NDbUnit2/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/savornicesei/NDbUnit2</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/savornicesei/NDbUnit2</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>ndbunit unit-tests database integration-tests</PackageTags>
+  </PropertyGroup>
 </Project>

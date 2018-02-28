@@ -4,7 +4,11 @@
  * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
+#if NETSTANDARD
 using Microsoft.Data.Sqlite;
+#else
+using System.Data.SQLite;
+#endif
 using System;
 using System.Data;
 using System.Data.Common;
