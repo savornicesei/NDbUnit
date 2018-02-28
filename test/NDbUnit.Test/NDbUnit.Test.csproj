@@ -27,7 +27,6 @@
     <PackageReference Include="OpenCover" Version="4.6.519" />
     <PackageReference Include="RhinoMocks" Version="3.6.1" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0-preview2-26227-01" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.107" />
     <!-- <PackageReference Include="Moq" Version="4.8.1" />
     <PackageReference Include="FluentAssertions" Version="5.1.2" /> -->
   </ItemGroup>
@@ -39,6 +38,11 @@
   <!-- .NET 4.5.2 references and build options -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
   </ItemGroup>
+
+    <!-- .NET standard references and build options -->
+    <ItemGroup Condition="$(DefineConstants.Contains(NETSTANDARD))">
+        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.0.0" />
+    </ItemGroup>
 
   <!-- .NET framework references and build options -->
   <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
@@ -60,6 +64,7 @@
       <IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.107" />
   </ItemGroup>
   
   <ItemGroup>

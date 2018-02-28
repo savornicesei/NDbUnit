@@ -4,8 +4,13 @@
  * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
+using System;
 using System.Data;
+#if NETSTANDARD
 using Microsoft.Data.Sqlite;
+#else
+using System.Data.SQLite;
+#endif
 
 namespace NDbUnit.Core.SqlLite
 {
@@ -13,12 +18,20 @@ namespace NDbUnit.Core.SqlLite
     {
         protected override IDbDataAdapter CreateDbDataAdapter()
         {
-            return new SQliteDataAdapter();
+#if NETSTANDARD
+            throw new NotImplementedException("Microsoft.Data.Sqlite does not implement IDbAdapter");
+#else
+            return new SQLiteDataAdapter();
+#endif
         }
 
         protected override IDbCommand CreateDbCommand(string cmdText)
         {
+#if NETSTANDARD
             return new SqliteCommand(cmdText);
+#else
+            return new SQLiteCommand(cmdText);
+#endif
         }
 
         /// <summary>

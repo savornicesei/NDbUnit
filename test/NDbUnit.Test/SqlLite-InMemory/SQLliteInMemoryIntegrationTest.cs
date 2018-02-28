@@ -8,7 +8,11 @@ using NDbUnit.Core;
 using NDbUnit.Core.SqlLite;
 using NUnit.Framework;
 using System.Data;
+#if NETSTANDARD
+using Microsoft.Data.Sqlite;
+#else
 using System.Data.SQLite;
+#endif
 using System.Diagnostics;
 using System.IO;
 
@@ -18,12 +22,20 @@ namespace NDbUnit.Test.SqlLite_InMemory
     [TestFixture]
     public class SQLliteInMemoryIntegrationTest
     {
+#if NETSTANDARD
+        private SqliteConnection _connection;
+#else
         private SQLiteConnection _connection;
+#endif
 
         [OneTimeSetUp]
         public void _OneTimeSetUp()
         {
+#if NETSTANDARD
+            _connection = new SqliteConnection(DbConnection.SqlLiteInMemConnectionString);
+#else
             _connection = new SQLiteConnection(DbConnection.SqlLiteInMemConnectionString);
+#endif
             ExecuteSchemaCreationScript();
         }
 

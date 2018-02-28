@@ -6,17 +6,26 @@
  */
 using System;
 using System.Data;
+#if NETSTANDARD
 using Microsoft.Data.Sqlite;
+#else
+using System.Data.SQLite;
+#endif
 
 namespace NDbUnit.Core.SqlLite
 {
+#if NETSTANDARD
     public class SqlLiteDbUnitTest : NDbUnitTest<SqliteConnection>
+#else
+    public class SqlLiteDbUnitTest : NDbUnitTest<SQLiteConnection>
+#endif
     {
         public SqlLiteDbUnitTest(string connectionString)
             : base(connectionString)
         {
         }
 
+#if NETSTANDARD
         public SqlLiteDbUnitTest(SqliteConnection connection)
             : base(connection)
         {
@@ -24,24 +33,31 @@ namespace NDbUnit.Core.SqlLite
 
         protected override IDbDataAdapter CreateDataAdapter(IDbCommand command)
         {
-            return new SQLiteDataAdapter((SqliteCommand)command);
+            throw new NotImplementedException("Microsoft.Data.Sqlite does not implement IDbAdapter");
+            //return new SQLiteDataAdapter((SqliteCommand)command);
         }
 
         protected override IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<SqliteConnection> connectionManager)
         {
             return new SqlLiteDbCommandBuilder(connectionManager);
         }
+#else
+        public SqlLiteDbUnitTest(SQLiteConnection connection)
+            : base(connection)
+        {
+        }
+
+        protected override IDbDataAdapter CreateDataAdapter(IDbCommand command)
+        {
+            return new SQLiteDataAdapter((SQLiteCommand)command);
+        }
+
+        protected override IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<SQLiteConnection> connectionManager)
+        {
+            return new SqlLiteDbCommandBuilder(connectionManager);
+        }
+#endif
         
-        //protected override IDbCommandBuilder CreateDbCommandBuilder(IDbConnection connection)
-        //{
-        //    return new SqlLiteDbCommandBuilder(connection);
-        //}
-
-        //protected override IDbCommandBuilder CreateDbCommandBuilder(string connectionString)
-        //{
-        //    return new SqlLiteDbCommandBuilder(connectionString);
-        //}
-
         protected override IDbOperation CreateDbOperation()
         {
             return new SqlLiteDbOperation();
@@ -56,8 +72,14 @@ namespace NDbUnit.Core.SqlLite
         {
         }
 
+#if NETSTANDARD
         public SqlLiteUnitTest(SqliteConnection connection) : base(connection)
         {
         }
+#else
+        public SqlLiteUnitTest(SQLiteConnection connection) : base(connection)
+        {
+        }
+#endif
     }
 }

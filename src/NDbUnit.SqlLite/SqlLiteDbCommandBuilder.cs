@@ -16,12 +16,20 @@ using System.Text;
 
 namespace NDbUnit.Core.SqlLite
 {
+#if NETSTANDARD
     public class SqlLiteDbCommandBuilder : DbCommandBuilder<SqliteConnection>
+#else
+    public class SqlLiteDbCommandBuilder : DbCommandBuilder<SQLiteConnection>
+#endif
     {
         private new DataTable _dataTableSchema;
-
+#if NETSTANDARD
         public SqlLiteDbCommandBuilder(DbConnectionManager<SqliteConnection> connectionManager )
             : base(connectionManager)
+#else
+        public SqlLiteDbCommandBuilder(DbConnectionManager<SQLiteConnection> connectionManager )
+            : base(connectionManager)
+#endif
         {
         }
 
@@ -37,7 +45,11 @@ namespace NDbUnit.Core.SqlLite
 
         protected override IDbCommand CreateDbCommand()
         {
+#if NETSTANDARD
             var command = new SqliteCommand();
+#else
+            var command = new SQLiteCommand();
+#endif
 
             if (CommandTimeOutSeconds != 0)
                 command.CommandTimeout = CommandTimeOutSeconds;
@@ -47,8 +59,13 @@ namespace NDbUnit.Core.SqlLite
 
         protected override IDbCommand CreateDeleteAllCommand(string tableName)
         {
+#if NETSTANDARD
             return
                 new SqliteCommand("DELETE FROM " + TableNameHelper.FormatTableName(tableName, QuotePrefix, QuoteSuffix));
+#else
+            return
+                new SQLiteCommand("DELETE FROM " + TableNameHelper.FormatTableName(tableName, QuotePrefix, QuoteSuffix));
+#endif
         }
 
         protected override IDbCommand CreateDeleteCommand(IDbCommand selectCommand, string tableName)
@@ -56,7 +73,11 @@ namespace NDbUnit.Core.SqlLite
             StringBuilder sb = new StringBuilder();
             sb.Append("DELETE FROM " + TableNameHelper.FormatTableName(tableName, QuotePrefix, QuoteSuffix) + " WHERE ");
 
+#if NETSTANDARD
             SqliteCommand sqlDeleteCommand = CreateDbCommand() as SqliteCommand;
+#else
+            SQLiteCommand sqlDeleteCommand = CreateDbCommand() as SQLiteCommand;
+#endif
 
             int count = 1;
             DbParameter sqlParameter;
@@ -72,7 +93,11 @@ namespace NDbUnit.Core.SqlLite
                     sb.Append(QuotePrefix + dataRow[SchemaColumns.ColumnName] + QuoteSuffix);
                     sb.Append("=@p" + count);
 
+#if NETSTANDARD
                     sqlParameter = (SqliteParameter)CreateNewSqlParameter(count, dataRow);
+#else
+                    sqlParameter = (SQLiteParameter)CreateNewSqlParameter(count, dataRow);
+#endif
                     sqlDeleteCommand.Parameters.Add(sqlParameter);
 
                     ++count;
@@ -92,7 +117,12 @@ namespace NDbUnit.Core.SqlLite
             sb.Append("INSERT INTO " + TableNameHelper.FormatTableName(tableName, QuotePrefix, QuoteSuffix) + "(");
             StringBuilder sbParam = new StringBuilder();
             DbParameter sqlParameter = null;
+            
+#if NETSTANDARD
             SqliteCommand sqlInsertCommand = CreateDbCommand() as SqliteCommand;
+#else
+            SQLiteCommand sqlInsertCommand = CreateDbCommand() as SQLiteCommand;
+#endif
             foreach (DataRow dataRow in _dataTableSchema.Rows)
             {
                 if (ColumnOKToInclude(dataRow) && !IsAutoIncrementing(dataRow)) // Not an identity column.
@@ -108,7 +138,11 @@ namespace NDbUnit.Core.SqlLite
                     sb.Append(QuotePrefix + dataRow[SchemaColumns.ColumnName] + QuoteSuffix);
                     sbParam.Append("@p" + count);
 
+#if NETSTANDARD
                     sqlParameter = (SqliteParameter)CreateNewSqlParameter(count, dataRow);
+#else
+                    sqlParameter = (SQLiteParameter)CreateNewSqlParameter(count, dataRow);
+#endif
                     sqlInsertCommand.Parameters.Add(sqlParameter);
 
                     ++count;
@@ -130,7 +164,12 @@ namespace NDbUnit.Core.SqlLite
             sb.Append("INSERT INTO " + TableNameHelper.FormatTableName(tableName, QuotePrefix, QuoteSuffix) + "(");
             StringBuilder sbParam = new StringBuilder();
             DbParameter sqlParameter = null;
+            
+#if NETSTANDARD
             SqliteCommand sqlInsertIdentityCommand = CreateDbCommand() as SqliteCommand;
+#else
+            SQLiteCommand sqlInsertIdentityCommand = CreateDbCommand() as SQLiteCommand;
+#endif
             foreach (DataRow dataRow in _dataTableSchema.Rows)
             {
                 if (ColumnOKToInclude(dataRow))
@@ -146,7 +185,11 @@ namespace NDbUnit.Core.SqlLite
                     sb.Append(QuotePrefix + dataRow[SchemaColumns.ColumnName] + QuoteSuffix);
                     sbParam.Append("@p" + count);
 
+#if NETSTANDARD
                     sqlParameter = (SqliteParameter)CreateNewSqlParameter(count, dataRow);
+#else
+                    sqlParameter = (SQLiteParameter)CreateNewSqlParameter(count, dataRow);
+#endif
                     sqlInsertIdentityCommand.Parameters.Add(sqlParameter);
 
                     ++count;
@@ -163,14 +206,24 @@ namespace NDbUnit.Core.SqlLite
 
         protected override IDataParameter CreateNewSqlParameter(int index, DataRow dataRow)
         {
+#if NETSTANDARD
             return new SqliteParameter("@p" + index, (SqliteType)dataRow[SchemaColumns.ProviderType],
                                        (int)dataRow[SchemaColumns.ColumnSize],
                                        (string)dataRow[SchemaColumns.ColumnName]);
+#else
+            return new SQLiteParameter("@p" + index, (DbType)dataRow[SchemaColumns.ProviderType],
+                (int)dataRow[SchemaColumns.ColumnSize],
+                (string)dataRow[SchemaColumns.ColumnName]);
+#endif
         }
 
         protected override IDbCommand CreateSelectCommand(DataSet ds, string tableName)
         {
+#if NETSTANDARD
             SqliteCommand sqlSelectCommand = CreateDbCommand() as SqliteCommand;
+#else
+            SQLiteCommand sqlSelectCommand = CreateDbCommand() as SQLiteCommand;
+#endif
 
             bool notFirstColumn = false;
             StringBuilder sb = new StringBuilder("SELECT ");
@@ -214,7 +267,11 @@ namespace NDbUnit.Core.SqlLite
             StringBuilder sb = new StringBuilder();
             sb.Append("UPDATE " + TableNameHelper.FormatTableName(tableName, QuotePrefix, QuoteSuffix) + " SET ");
 
+#if NETSTANDARD
             SqliteCommand sqlUpdateCommand = CreateDbCommand() as SqliteCommand;
+#else
+            SQLiteCommand sqlUpdateCommand = CreateDbCommand() as SQLiteCommand;
+#endif
 
             int count = 1;
             bool notFirstKey = false;
@@ -249,7 +306,11 @@ namespace NDbUnit.Core.SqlLite
                         sbPrimaryKey.Append(QuotePrefix + dataRow[SchemaColumns.ColumnName] + QuoteSuffix);
                         sbPrimaryKey.Append("=@p" + count);
 
+#if NETSTANDARD
                         sqlParameter = (SqliteParameter)CreateNewSqlParameter(count, dataRow);
+#else
+                        sqlParameter = (SQLiteParameter)CreateNewSqlParameter(count, dataRow);
+#endif
                         sqlUpdateCommand.Parameters.Add(sqlParameter);
 
                         ++count;
@@ -268,7 +329,11 @@ namespace NDbUnit.Core.SqlLite
                         sb.Append(QuotePrefix + dataRow[SchemaColumns.ColumnName] + QuoteSuffix);
                         sb.Append("=@p" + count);
 
+#if NETSTANDARD
                         sqlParameter = (SqliteParameter)CreateNewSqlParameter(count, dataRow);
+#else
+                        sqlParameter = (SQLiteParameter)CreateNewSqlParameter(count, dataRow);
+#endif
                         sqlUpdateCommand.Parameters.Add(sqlParameter);
 
                         ++count;
@@ -285,7 +350,11 @@ namespace NDbUnit.Core.SqlLite
 
         protected override IDbConnection GetConnection(string connectionString)
         {
+#if NETSTANDARD
             return new SqliteConnection(connectionString);
+#else
+            return new SQLiteConnection(connectionString);
+#endif
         }
 
         /// <summary>

@@ -8,7 +8,11 @@ using NDbUnit.Core;
 using NDbUnit.Core.SqlLite;
 using NUnit.Framework;
 using System.Collections.Generic;
+#if NETSTANDARD
+using Microsoft.Data.Sqlite;
+#else
 using System.Data.SQLite;
+#endif
 
 namespace NDbUnit.Test.SqlClient
 {
@@ -108,7 +112,11 @@ namespace NDbUnit.Test.SqlClient
 
         protected override IDbCommandBuilder GetDbCommandBuilder()
         {
+#if NETSTANDARD
+            return new SqlLiteDbCommandBuilder(new DbConnectionManager<SqliteConnection>(DbConnection.SqlLiteConnectionString));
+#else
             return new SqlLiteDbCommandBuilder(new DbConnectionManager<SQLiteConnection>(DbConnection.SqlLiteConnectionString));
+#endif
         }
 
         protected override string GetXmlSchemaFilename()

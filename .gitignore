@@ -8,6 +8,7 @@
 *.sln.docstates
 .vs
 .sonar*
+*.userprefs
 
 # Build results
 [Dd]ebug/
@@ -23,6 +24,7 @@ bld/
 
 # Roslyn cache directories
 *.ide/
+*.idea/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

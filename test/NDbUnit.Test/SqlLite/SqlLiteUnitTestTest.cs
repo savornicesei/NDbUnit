@@ -9,7 +9,11 @@ using NDbUnit.Core.SqlLite;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Data;
+#if NETSTANDARD
+using Microsoft.Data.Sqlite;
+#else
 using System.Data.SQLite;
+#endif
 using System.IO;
 
 namespace NDbUnit.Test.SqlLite
@@ -51,10 +55,17 @@ namespace NDbUnit.Test.SqlLite
             {
             }
 
+#if NETSTANDARD
+            protected override IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<SqliteConnection> connectionManager )
+            {
+                return _mockDbCommandBuilder;
+            }
+#else
             protected override IDbCommandBuilder CreateDbCommandBuilder(DbConnectionManager<SQLiteConnection> connectionManager )
             {
                 return _mockDbCommandBuilder;
             }
+#endif
 
             protected override IDbOperation CreateDbOperation()
             {
