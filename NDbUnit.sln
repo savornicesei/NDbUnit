@@ -10,10 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Build", "1. Build", "{11
 		.appveyor.yml = .appveyor.yml
 		.develop.appveyor.yml = .develop.appveyor.yml
 		.travis.yml = .travis.yml
-		src\ndbunit.targets.xml = src\ndbunit.targets.xml
 		NuGet.config = NuGet.config
 		scripts\build-setup.ps1 = scripts\build-setup.ps1
 		scripts\test-setup-databases.ps1 = scripts\test-setup-databases.ps1
+		src\ndbunit.targets = src\ndbunit.targets
+		src\netfx.props = src\netfx.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Src", "2. Src", "{7DD0FF84-8EAD-47F0-A208-021413504642}"

@@ -1,24 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../ndbunit.targets.xml" />
+  <Import Project="..\netfx.props" />
+  <Import Project="..\ndbunit.targets" />
   <PropertyGroup>
     <PackageId>NDbUnit2.Sqlite</PackageId>
   </PropertyGroup>
-
   <!-- common NuGet package refs -->
-
   <!-- .NET Standard 2.0 references and build options -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
   </ItemGroup>
-
+    
   <!-- .NET 4.5.2 references and build options -->
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
   </ItemGroup>
-
+    
   <!-- .NET standard references and build options -->
   <ItemGroup Condition="$(DefineConstants.Contains(NETSTANDARD))">
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.0.0" />
   </ItemGroup>
-
+    
   <!-- .NET framework references and build options -->
   <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
     <Reference Include="Microsoft.CSharp" />
@@ -32,12 +31,13 @@
   <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.107" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\NDbUnit.Core\NDbUnit.Core.csproj" />
   </ItemGroup>
-  
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <!--<PackageReference Include="NETStandard.Library" Version="2.0.3" />-->
   </ItemGroup>
 </Project>

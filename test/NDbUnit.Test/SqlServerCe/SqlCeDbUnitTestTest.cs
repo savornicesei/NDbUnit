@@ -5,7 +5,7 @@
  *
  */
 using NDbUnit.Core;
-using NDbUnit.Core.SqlServerCe;
+using NDbUnit.SqlServerCe;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Data;

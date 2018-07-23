@@ -1,294 +1,280 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../../src/ndbunit.targets.xml" />
-  
-  <PropertyGroup>
-    <PackageId>NDbUnit2.Test</PackageId>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <!-- Mark the project as being a test project -->
-    <SonarQubeTestProject>true</SonarQubeTestProject>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Remove="docs\**" />
-    <EmbeddedResource Remove="docs\**" />
-    <None Remove="docs\**" />
-  </ItemGroup>
-
-  <!-- common NuGet package refs -->
-  <ItemGroup>
-    <PackageReference Include="CompareNETObjects" Version="4.3.0" />
-    <PackageReference Include="coveralls.net" Version="0.7.0" />
-    <PackageReference Include="MySql.Data" Version="6.10.6" />
-    <PackageReference Include="Npgsql" Version="3.2.6" />
-    <PackageReference Include="NUnit" Version="3.9.0" />
-    <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
-    <PackageReference Include="OpenCover" Version="4.6.519" />
-    <PackageReference Include="RhinoMocks" Version="3.6.1" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0-preview2-26227-01" />
-    <!-- <PackageReference Include="Moq" Version="4.8.1" />
-    <PackageReference Include="FluentAssertions" Version="5.1.2" /> -->
-  </ItemGroup>
-
-  <!-- .NET Standard 2.0 references and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-  </ItemGroup>
-
-  <!-- .NET 4.5.2 references and build options -->
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
-  </ItemGroup>
-
-    <!-- .NET standard references and build options -->
-    <ItemGroup Condition="$(DefineConstants.Contains(NETSTANDARD))">
-        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.0.0" />
-    </ItemGroup>
-
-  <!-- .NET framework references and build options -->
-  <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
-  <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
-    <ProjectReference Include="..\..\src\NDbUnit.OleDb\NDbUnit.OleDb.csproj" />
-    <ProjectReference Include="..\..\src\NDbUnit.OracleClient\NDbUnit.OracleClient.csproj" />
-    <ProjectReference Include="..\..\src\NDbUnit.SqlServerCe\NDbUnit.SqlServerCe.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
-    <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1">
-      <IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.107" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\NDbUnit.MySql\NDbUnit.MySql.csproj" />
-    <ProjectReference Include="..\..\src\NDbUnit.Postgresql\NDbUnit.Postgresql.csproj" />
-    <ProjectReference Include="..\..\src\NDbUnit.SqlClient\NDbUnit.SqlClient.csproj" />
-    <ProjectReference Include="..\..\src\NDbUnit.SqlLite\NDbUnit.SqlLite.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="OleDb\**" />
-    <Compile Remove="OracleClient\**" />
-    <Compile Remove="SqlServerCe\**" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="Scripts\postgres-testdb-create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\oracle-testdb-create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="SqlLite\test.sqlite.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="SqlServerCe\testdb.sdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestScripts\sqlserver-drop-create-testdb.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestScripts\sqlserver-testdb03.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestScripts\sqlserver-testdb04.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestScripts\testscript03.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestScripts\testscript02.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestScripts\testscript01.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\mysql-testdb-create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\sqlite-testdb-create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\sqlserver-testdb-create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Xml\DataSetComparer\DifferingDataSetWithDiffTablesToCompare.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DifferingDataSetWithDiffTablesToCompare.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\DataSetComparer\DifferingDataSetWithMissingFKToCompare.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DifferingDataSetWithMissingFKToCompare.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\DataSetComparer\DifferingDataSetWithDiffColumnNameToCompare.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DifferingDataSetWithDiffColumnNameToCompare.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\DataSetComparer\DifferingDataSetWithDiffColumnTypeToCompare.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DifferingDataSetWithDiffColumnTypeToCompare.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\DataSetComparer\FirstDataSetToCompare.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>FirstDataSetToCompare.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\MySql\DateAsPrimaryKey.xsd">
-      <LastGenOutput>DateAsPrimaryKey.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\MySql\UserDS.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Xml\DataSetComparer\DifferingDataToCompare.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\DataSetComparer\DifferingDataWithRowsInDiffOrderToCompare.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\DataSetComparer\FirstDataToCompare.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\MySql\DateAsPrimaryKey.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\OleDb\UserDS.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Xml\OracleClient\UserDS.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>UserDS1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\Postgresql\UserDS.xsd">
-      <SubType>Designer</SubType>
-      <LastGenOutput>UserDS.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\SqlServerCe\UserDS.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Xml\OleDb\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\OleDb\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\OleDb\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\OracleClient\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\OracleClient\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\OracleClient\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\Postgresql\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\Postgresql\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\Postgresql\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServer\DataFileWithSchemaPrefixes.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServer\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServer\UserAppend.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServer\UserDS.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Xml\SQLite\UserDS.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>UserDS.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Xml\SqlServer\SchemaWithSchemaPrefixes.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SchemaWithSchemaPrefixes.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Xml\MySql\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\MySql\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\MySql\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SQLite\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SQLite\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SQLite\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServer\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServer\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServerCe\User.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServerCe\UserMod.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Xml\SqlServerCe\UserRefresh.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Data.Sqlite.Core">
-      <Version>2.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
+	<Import Project="..\..\src\netfx.props" />
+	<Import Project="..\..\src\ndbunit.targets" />
+	<PropertyGroup>
+		<PackageId>NDbUnit2.Test</PackageId>
+	</PropertyGroup>
+	<PropertyGroup>
+		<!-- Mark the project as being a test project -->
+		<SonarQubeTestProject>true</SonarQubeTestProject>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="docs\**" />
+		<EmbeddedResource Remove="docs\**" />
+		<None Remove="docs\**" />
+	</ItemGroup>
+	<!--<ItemGroup Condition="$(DefineConstants.Contains(NETSTANDARD))">-->
+    <ItemGroup Condition="'$(OS)' == 'Unix'">
+		<Compile Remove="OleDb\**" />
+		<Compile Remove="SqlServerCe\**" />
+	</ItemGroup>
+	<!-- common NuGet package refs -->
+	<ItemGroup>
+		<PackageReference Include="CompareNETObjects" Version="4.53.0" />
+		<PackageReference Include="coveralls.net" Version="0.7.0" />
+		<PackageReference Include="MySql.Data" Version="8.0.11" />
+		<PackageReference Include="Npgsql" Version="4.0.0" />
+		<PackageReference Include="NUnit" Version="3.10.1" />
+		<PackageReference Include="NUnit.ConsoleRunner" Version="3.8.0" />
+		<PackageReference Include="OpenCover" Version="4.6.519" />
+		<PackageReference Include="RhinoMocks" Version="3.6.1" />
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+	</ItemGroup>
+	<!-- .NET Standard 2.0 references and build options -->
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+	</ItemGroup>
+	<!-- .NET 4.5.2 references and build options -->
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
+	</ItemGroup>
+	<!-- .NET standard references and build options -->
+	<ItemGroup Condition="$(DefineConstants.Contains(NETSTANDARD))">
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="2.0.0" />
+		<PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.12.0-beta2" />
+	</ItemGroup>
+	<!-- .NET framework references and build options -->
+	<ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
+		<PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1">
+			<IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Oracle.ManagedDataAccess" Version="12.2.1100" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.107" />
+	</ItemGroup>
+	<ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="System.Xml" />
+		<Reference Include="System.Xml.Linq" />
+	</ItemGroup>
+	<ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
+		<ProjectReference Include="..\..\src\NDbUnit.OleDb\NDbUnit.OleDb.csproj" />
+		<ProjectReference Include="..\..\src\NDbUnit.SqlServerCe\NDbUnit.SqlServerCe.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\NDbUnit.MySql\NDbUnit.MySql.csproj" />
+		<ProjectReference Include="..\..\src\NDbUnit.OracleClient\NDbUnit.OracleClient.csproj" />
+		<ProjectReference Include="..\..\src\NDbUnit.Postgresql\NDbUnit.Postgresql.csproj" />
+		<ProjectReference Include="..\..\src\NDbUnit.SqlClient\NDbUnit.SqlClient.csproj" />
+		<ProjectReference Include="..\..\src\NDbUnit.SqlLite\NDbUnit.SqlLite.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Scripts\postgres-testdb-create.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Scripts\oracle-testdb-create.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<None Include="SqlLite\test.sqlite.db">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<Content Include="SqlServerCe\testdb.sdf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestScripts\sqlserver-drop-create-testdb.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestScripts\sqlserver-testdb03.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestScripts\sqlserver-testdb04.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestScripts\testscript03.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestScripts\testscript02.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="TestScripts\testscript01.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Scripts\mysql-testdb-create.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Scripts\sqlite-testdb-create.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Scripts\sqlserver-testdb-create.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Xml\DataSetComparer\DifferingDataSetWithDiffTablesToCompare.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>DifferingDataSetWithDiffTablesToCompare.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\DataSetComparer\DifferingDataSetWithMissingFKToCompare.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>DifferingDataSetWithMissingFKToCompare.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\DataSetComparer\DifferingDataSetWithDiffColumnNameToCompare.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>DifferingDataSetWithDiffColumnNameToCompare.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\DataSetComparer\DifferingDataSetWithDiffColumnTypeToCompare.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>DifferingDataSetWithDiffColumnTypeToCompare.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\DataSetComparer\FirstDataSetToCompare.xsd">
+			<SubType>Designer</SubType>
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>FirstDataSetToCompare.Designer.cs</LastGenOutput>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\MySql\DateAsPrimaryKey.xsd">
+			<LastGenOutput>DateAsPrimaryKey.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\MySql\UserDS.xsd">
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<Content Include="Xml\DataSetComparer\DifferingDataToCompare.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\DataSetComparer\DifferingDataWithRowsInDiffOrderToCompare.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\DataSetComparer\FirstDataToCompare.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\MySql\DateAsPrimaryKey.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\OleDb\UserDS.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<None Include="Xml\OracleClient\UserDS.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>UserDS1.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\Postgresql\UserDS.xsd">
+			<SubType>Designer</SubType>
+			<LastGenOutput>UserDS.Designer.cs</LastGenOutput>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\SqlServerCe\UserDS.xsd">
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<Content Include="Xml\OleDb\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\OleDb\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\OleDb\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\OracleClient\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\OracleClient\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\OracleClient\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\Postgresql\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\Postgresql\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\Postgresql\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServer\DataFileWithSchemaPrefixes.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServer\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServer\UserAppend.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServer\UserDS.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<None Include="Xml\SQLite\UserDS.xsd">
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>UserDS.Designer.cs</LastGenOutput>
+			<SubType>Designer</SubType>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Xml\SqlServer\SchemaWithSchemaPrefixes.xsd">
+			<SubType>Designer</SubType>
+			<Generator>MSDataSetGenerator</Generator>
+			<LastGenOutput>SchemaWithSchemaPrefixes.Designer.cs</LastGenOutput>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<Content Include="Xml\MySql\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\MySql\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\MySql\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SQLite\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SQLite\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SQLite\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServer\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServer\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServerCe\User.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServerCe\UserMod.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Xml\SqlServerCe\UserRefresh.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="Microsoft.Data.Sqlite.Core">
+			<Version>2.0.0</Version>
+		</PackageReference>
+	</ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
  *
  */
 using NDbUnit.Core;
-using NDbUnit.Core.OleDb;
+using NDbUnit.OleDb;
 using NUnit.Framework;
 using System;
 using System.Data;
@@ -19,7 +19,7 @@ namespace NDbUnit.Test.OleDb
     {
         protected override NDbUnit.Core.IDbCommandBuilder GetCommandBuilder()
         {
-            return new NDbUnit.Core.OleDb.OleDbCommandBuilder(new DbConnectionManager<OleDbConnection>(DbConnection.OleDbConnectionString));
+            return new NDbUnit.OleDb.OleDbCommandBuilder(new DbConnectionManager<OleDbConnection>(DbConnection.OleDbConnectionString));
         }
 
         protected override NDbUnit.Core.IDbOperation GetDbOperation()

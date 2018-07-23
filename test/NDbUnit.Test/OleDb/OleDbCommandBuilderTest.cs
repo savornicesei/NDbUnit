@@ -8,9 +8,9 @@ using NDbUnit.Core;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Data.OleDb;
-using OleDbCommandBuilder = NDbUnit.Core.OleDb.OleDbCommandBuilder;
+using OleDbCommandBuilder = NDbUnit.OleDb.OleDbCommandBuilder;
 
-namespace NDbUnit.Test.SqlClient
+namespace NDbUnit.Test.OleDb
 {
     [Category(TestCategories.OleDbTests)]
     [TestFixture]

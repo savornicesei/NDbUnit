@@ -1,0 +1,43 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- build targets -->
+    <PropertyGroup>
+        <TargetFrameworks>net452;</TargetFrameworks>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
+
+    <!-- constants Condition="'$(TargetIsMono)' == 'true'"-->
+    <PropertyGroup Condition="$(TargetFramework.StartsWith('net4')) and '$(OS)' == 'Unix'">
+        <DefineConstants>$(DefineConstants);MONO</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'">
+        <DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'net452'">
+        <DefineConstants>$(DefineConstants);NETFULL</DefineConstants>
+    </PropertyGroup>
+
+    <!-- project version and infos required for NuGet packaging -->
+    <PropertyGroup>
+        <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+        <ProjectMajorVersion>2</ProjectMajorVersion>
+        <ProjectMinorVersion>0</ProjectMinorVersion>
+        <ProjectPatchVersion>0</ProjectPatchVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <Authors>Avornicesei Simona</Authors>
+        <!--<Company></Company>-->
+        <Product>NDbUnit2</Product>
+        <PackageId>NDbUnit2</PackageId>
+        <AssemblyVersion>$(ProjectMajorVersion).$(ProjectMinorVersion).$(ProjectPatchVersion)</AssemblyVersion>
+        <FileVersion>$(ProjectMajorVersion).$(ProjectMinorVersion).$(ProjectPatchVersion)</FileVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+        <Description>A revived .NET library for managing database state during unit testing, with roots in NDbUnit and DbUnit projects</Description>
+        <Copyright>Copyright © $(CurrentYear)</Copyright>
+        <PackageLicenseUrl>https://github.com/savornicesei/NDbUnit2/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/savornicesei/NDbUnit2</PackageProjectUrl>
+        <PackageIconUrl></PackageIconUrl>
+        <RepositoryUrl>https://github.com/savornicesei/NDbUnit2</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>ndbunit unit-tests database integration-tests</PackageTags>
+    </PropertyGroup>
+</Project>

@@ -5,7 +5,11 @@
  *
  */
 using NDbUnit.Core;
+#if MONO
+using System.Data.OracleClient;
+#else
 using Oracle.ManagedDataAccess.Client;
+#endif
 using System;
 using System.Data;
 using System.Text;

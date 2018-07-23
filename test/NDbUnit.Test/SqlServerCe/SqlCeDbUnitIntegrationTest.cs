@@ -4,7 +4,7 @@
  * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-using NDbUnit.Core.SqlServerCe;
+using NDbUnit.SqlServerCe;
 using NUnit.Framework;
 
 namespace NDbUnit.Test.SqlServerCe

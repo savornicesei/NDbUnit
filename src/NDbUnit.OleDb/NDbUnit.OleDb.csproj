@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../ndbunit.targets.xml" />
+  <Import Project="..\netfx.props" />
+  <Import Project="..\ndbunit.targets" />
   
   <PropertyGroup>
     <TargetFrameworks>net452</TargetFrameworks>

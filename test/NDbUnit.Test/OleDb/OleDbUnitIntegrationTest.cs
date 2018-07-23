@@ -4,10 +4,10 @@
  * This source code is released under the Apache 2.0 License; see the accompanying license file.
  *
  */
-using NDbUnit.Core.OleDb;
+using NDbUnit.OleDb;
 using NUnit.Framework;
 
-namespace NDbUnit.Test.SqlClient
+namespace NDbUnit.Test.OleDb
 {
     [Category(TestCategories.OleDbTests)]
     public class OleDbUnitIntegrationTest : IntegationTestBase

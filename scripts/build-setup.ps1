@@ -45,7 +45,7 @@ function Check-Machine{
 function Install-Choco{
 	param
 	{
-		[Parameter(Mandatory = $true, HelpMessage = "Operating system (can be Unix, Windows or .")]
+		[Parameter(Mandatory = $true, HelpMessage = "Operating system (can be Unix, Windows or Mac).")]
 		[String]
 		$Os
 	}

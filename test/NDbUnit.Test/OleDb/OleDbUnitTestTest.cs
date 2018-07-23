@@ -5,7 +5,7 @@
  *
  */
 using NDbUnit.Core;
-using NDbUnit.Core.OleDb;
+using NDbUnit.OleDb;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Data;
