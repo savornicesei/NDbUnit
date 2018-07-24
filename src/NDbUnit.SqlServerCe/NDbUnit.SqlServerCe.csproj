@@ -3,7 +3,7 @@
     <Import Project="..\ndbunit.targets" />
   
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <!--<TargetFramework>net452</TargetFramework>-->
     <PackageId>NDbUnit2.SqlServerCe</PackageId>
   </PropertyGroup>
 
@@ -19,6 +19,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
   </ItemGroup>
 
+    <ItemGroup Condition="'$(OS)' == 'Unix'">
+        <Compile Remove="**\SqlCe*" />
+    </ItemGroup>
+
   <!-- .NET framework references and build options -->
   <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
     <Reference Include="Microsoft.CSharp" />
@@ -29,7 +33,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
-  <ItemGroup Condition="$(DefineConstants.Contains(NETFULL))">
+  <ItemGroup Condition="$(DefineConstants.Contains(NETFULL)) AND '$(OS)' == 'Windows_NT'">
     <PackageReference Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1">
       <IncludeAssets>compile;native;NativeBinaries</IncludeAssets>
     </PackageReference>

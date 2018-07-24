@@ -8,7 +8,11 @@ using NDbUnit.Core;
 using NDbUnit.OracleClient;
 using NDbUnit.Test.Common;
 using NUnit.Framework;
+#if MONO
+using System.Data.OracleClient;
+#else
 using Oracle.ManagedDataAccess.Client;
+#endif
 using System.Collections.Generic;
 using System.Data;
 using System.IO;

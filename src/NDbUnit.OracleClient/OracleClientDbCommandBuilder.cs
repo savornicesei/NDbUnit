@@ -70,7 +70,9 @@ namespace NDbUnit.OracleClient
             sb.Append(String.Format(") VALUES({0})", sbParam));
 
             sqlInsertCommand.CommandText = sb.ToString();
+            #if !MONO
             ((OracleCommand)sqlInsertCommand).BindByName = true;
+            #endif
 
             return sqlInsertCommand;
         }
@@ -78,35 +80,56 @@ namespace NDbUnit.OracleClient
         protected override IDbCommand CreateUpdateCommand(IDbCommand selectCommand, string tableName)
         {
             var command = base.CreateUpdateCommand(selectCommand, tableName);
-            ((OracleCommand) command).BindByName = true;
+            
+            #if !MONO
+                ((OracleCommand) command).BindByName = true;
+            #endif
+            
             return command;
         }
 
         protected override IDbCommand CreateInsertIdentityCommand(IDbCommand selectCommand, string tableName)
         {
             var command = base.CreateInsertIdentityCommand(selectCommand, tableName);
-            ((OracleCommand)command).BindByName = true;
+            
+            #if !MONO
+                ((OracleCommand)command).BindByName = true;
+            #endif
+            
             return command;
         }
 
         protected override IDbCommand CreateDeleteCommand(IDbCommand selectCommand, string tableName)
         {
             var command = base.CreateDeleteCommand(selectCommand, tableName);
-            ((OracleCommand)command).BindByName = true;
+            
+            #if !MONO
+                ((OracleCommand)command).BindByName = true;
+            #endif
+            
             return command;
         }
 
         protected override IDbCommand CreateSelectCommand(DataSet ds, string tableName)
         {
             var command = base.CreateSelectCommand(ds, tableName);
-            ((OracleCommand)command).BindByName = true;
+            
+            #if !MONO
+                ((OracleCommand)command).BindByName = true;
+            #endif
+            
             return command;
         }
 
         protected override IDataParameter CreateNewSqlParameter(int index, DataRow dataRow)
         {
-            return new OracleParameter("p" + index, (Oracle.ManagedDataAccess.Client.OracleDbType)dataRow["ProviderType"],
+            #if MONO
+                return new OracleParameter("p" + index, (OracleType) dataRow["ProviderType"],
+                                        (int) dataRow["ColumnSize"], (string) dataRow["ColumnName"]);
+            #else
+                return new OracleParameter("p" + index, (OracleDbType)dataRow["ProviderType"],
                                       (int)dataRow["ColumnSize"], (string)dataRow["ColumnName"]);
+            #endif
         }
 
         protected override IDbConnection GetConnection(string connectionString)

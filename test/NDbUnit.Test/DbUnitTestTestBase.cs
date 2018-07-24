@@ -24,18 +24,22 @@ namespace NDbUnit.Test.Common
         private const int EXPECTED_COUNT_OF_COMMANDS = 3;
 
         protected IDbConnection _mockConnection;
+        //protected Mock<IDbConnection> _mockConnection;
 
         protected static FileStream _mockDataFileStream;
 
         protected static IDbCommandBuilder _mockDbCommandBuilder;
+        //protected static Mock<IDbCommandBuilder> _mockDbCommandBuilder;
 
         protected static IDbOperation _mockDbOperation;
+        //protected static Mock<IDbOperation> _mockDbOperation;
 
         protected MockRepository _mocker;
 
         protected static FileStream _mockSchemaFileStream;
 
         protected IDbTransaction _mockTransaction;
+        //protected Mock<IDbTransaction> _mockTransaction;
 
         protected IUnitTestStub _nDbUnitTestStub;
 
@@ -58,6 +62,15 @@ namespace NDbUnit.Test.Common
             _nDbUnitTestStub = GetUnitTestStub();
             _mockConnection = _mocker.CreateMock<IDbConnection>();
             _mockTransaction = _mocker.CreateMock<IDbTransaction>();
+            
+            /*
+            _mockDbCommandBuilder = new Mock<IDbCommandBuilder>();
+            _mockDbOperation = new Mock<IDbOperation>();
+            _nDbUnitTestStub = GetUnitTestStub();
+            _mockConnection = new Mock<IDbConnection>();
+            _mockTransaction = new Mock<IDbTransaction>();
+            */
+            
         }
 
         [TearDown]
@@ -65,7 +78,7 @@ namespace NDbUnit.Test.Common
         {
             _mocker.ReplayAll();
             _mocker.VerifyAll();
-
+            
             _mockSchemaFileStream.Close();
             _mockDataFileStream.Close();
         }
@@ -91,8 +104,22 @@ namespace NDbUnit.Test.Common
 
             //expectations
             _mockDbCommandBuilder.BuildCommands(_mockSchemaFileStream);
+            //_mockDbCommandBuilder.Object.BuildCommands(_mockSchemaFileStream);
             DataSet dummyDS = new DataSet();
             dummyDS.ReadXmlSchema(ReadOnlyStreamFromFilename(GetXmlSchemaFilename()));
+
+            /*
+            _mockDbCommandBuilder.Setup(m => m.GetSchema()).Returns(dummyDS);
+            _mockDbCommandBuilder.SetupGet(m => m.Connection).Returns(_mockConnection.Object);
+            
+            _mockConnection.Setup(m => m.BeginTransaction()).Returns(_mockTransaction.Object);
+            _mockDbOperation.Object.Update(dummyDS, _mockDbCommandBuilder.Object, _mockTransaction.Object);
+            _mockTransaction.Object.Commit();
+            _mockConnection.Setup(m => m.State).Returns(ConnectionState.Open);
+            _mockTransaction.Object.Dispose();
+            _mockConnection.Object.Close();
+            */
+          
             SetupResult.For(_mockDbCommandBuilder.GetSchema()).Return(dummyDS);
             SetupResult.For(_mockDbCommandBuilder.Connection).Return(_mockConnection);
 
@@ -106,6 +133,7 @@ namespace NDbUnit.Test.Common
             //end expectations
 
             _mocker.ReplayAll();
+            
             _nDbUnitTestStub.ReadXmlSchema(GetXmlSchemaFilename());
             _nDbUnitTestStub.ReadXml(GetXmlFilename());
             _nDbUnitTestStub.PerformDbOperation(DbOperationFlag.Update);
@@ -125,8 +153,11 @@ namespace NDbUnit.Test.Common
         {
             //expectations
             _mockDbCommandBuilder.BuildCommands(_mockSchemaFileStream);
+            //_mockDbCommandBuilder.Object.BuildCommands(_mockSchemaFileStream);
             DataSet dummyDS = new DataSet();
             dummyDS.ReadXmlSchema(ReadOnlyStreamFromFilename(GetXmlSchemaFilename()));
+            //_mockDbCommandBuilder.Setup(m => m.GetSchema()).Returns(dummyDS);
+            
             SetupResult.For(_mockDbCommandBuilder.GetSchema()).Return(dummyDS);
             _mocker.ReplayAll();
 
