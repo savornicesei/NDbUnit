@@ -18,6 +18,8 @@ using System.Data.SQLite;
 namespace NDbUnit.Test.SqlLite
 {
     [Category(TestCategories.SqliteTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class SqlLiteDbOperationTest : NDbUnit.Test.Common.DbOperationTestBase
     {

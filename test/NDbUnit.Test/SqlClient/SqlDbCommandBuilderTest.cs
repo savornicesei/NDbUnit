@@ -13,6 +13,8 @@ using System.Data.SqlClient;
 namespace NDbUnit.Test.SqlClient
 {
     [Category(TestCategories.SqlServerTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     class SqlDbCommandBuilderTest : NDbUnit.Test.Common.DbCommandBuilderTestBase
     {

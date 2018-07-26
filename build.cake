@@ -1,0 +1,70 @@
+
+//////////////////////////////////////////////////////////////////////
+// IMPORTS
+//////////////////////////////////////////////////////////////////////
+#tool "nuget:?package=GitVersion.CommandLine"
+
+
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Debug"); 
+var verbosity = Argument("verbosity", "Normal");
+
+
+//////////////////////////////////////////////////////////////////////
+// SOLUTION
+//////////////////////////////////////////////////////////////////////
+var appName = "NDbUnit2";
+
+
+///////////////////////////////////////////////////////////////////////////////
+// LOAD
+///////////////////////////////////////////////////////////////////////////////
+#load "./build/scripts/load.cake"
+
+Task("Default")
+	.Does(() =>
+	{
+		Information("Hello World!");
+	});
+
+Task("Clean")
+	.Does(() =>
+	{
+		DotNetCoreClean(solution);
+	});
+
+Task("Build")
+	.IsDependentOn("Clean")
+	.IsDependentOn("Restore")
+	.Does(() =>
+	{
+		DotNetCoreRestore();
+		DotNetCoreBuild(solution,
+										new DotNetCoreBuildSettings()
+										{
+											Configuration = configuration
+										});
+	});
+
+Task("Test")
+	.Does(() =>
+	{
+		
+	});
+
+Task("CodeQuality")
+	.Does(() =>
+	{
+		
+	});
+
+Task("Package")
+	.Does(() =>
+	{
+		
+	});
+
+RunTarget(target);

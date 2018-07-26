@@ -18,6 +18,8 @@ using System.Collections.Generic;
 namespace NDbUnit.Test.OracleClient
 {
     [Category(TestCategories.OracleTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class OracleClientDbCommandBuilderTest : DbCommandBuilderTestBase
     {
         public override IList<string> ExpectedDataSetTableNames

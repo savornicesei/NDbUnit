@@ -15,6 +15,8 @@ using System.Data;
 namespace NDbUnit.Test.Postgresql
 {
     [Category(TestCategories.PostgresTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     internal class PostgresqlDbOperationTest : DbOperationTestBase
     {

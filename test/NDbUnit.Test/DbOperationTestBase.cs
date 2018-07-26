@@ -12,6 +12,8 @@ using System.IO;
 
 namespace NDbUnit.Test.Common
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public abstract class DbOperationTestBase
     {
         protected IDbCommandBuilder _commandBuilder;

@@ -9,6 +9,8 @@ using NUnit.Framework;
 namespace NDbUnit.Test.SqlClient
 {
     [Category(TestCategories.SqlServerTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class DataSetAppendXmlTest
     {

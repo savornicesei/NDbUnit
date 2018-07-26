@@ -12,6 +12,8 @@ using System.Linq;
 
 namespace NDbUnit.Test.ScriptManager
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class WhenScriptsContainsFiles
     {

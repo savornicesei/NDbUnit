@@ -15,5 +15,9 @@ namespace NDbUnit.Test
         public const string SqlServerTests = "SqlServerTests";
         public const string SqlServerCeTests = "SqlServerCeTests";
         public const string SqliteTests = "SqliteTests";
+	    public const string AllTests = "AllTests";
+	    public const string CrossPlatformTests = "CrossPlatformTests";
+	    public const string WindowsOnlyTests = "WindowsOnlyTests";
+	    public const string UnixOnlyTests = "UnixOnlyTests";
     }
 }

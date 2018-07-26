@@ -14,6 +14,8 @@ using System.Data.SqlClient;
 namespace NDbUnit.Test.SqlClient
 {
     [Category(TestCategories.SqlServerTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class SqlDbOperationTest : NDbUnit.Test.Common.DbOperationTestBase
     {

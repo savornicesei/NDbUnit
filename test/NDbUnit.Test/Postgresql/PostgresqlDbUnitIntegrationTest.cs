@@ -11,6 +11,8 @@ using NUnit.Framework;
 namespace NDbUnit.Test.Postgresql
 {
     [Category(TestCategories.PostgresTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class PostgresqlDbUnitIntegrationTest : IntegationTestBase
     {
         protected override INDbUnitTest GetNDbUnitTest()

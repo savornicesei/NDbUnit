@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace NDbUnit.Test.DataSetComparer
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class When_Comparing_DataSets_With_Matching_Data_But_Rows_In_Diff_Order : DataSetComparerTestBase
     {
         [Test]

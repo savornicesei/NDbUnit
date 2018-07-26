@@ -15,6 +15,8 @@ using System.IO;
 namespace NDbUnit.Test.SqlServerCe
 {
     [Category(TestCategories.SqlServerCeTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.WindowsOnlyTests)]
     [TestFixture]
     public class SqlCeDbUnitTestTest : NDbUnit.Test.Common.DbUnitTestTestBase
     {

@@ -12,9 +12,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 
-namespace NDbUnit.Test.MySqlDb
+namespace NDbUnit.Test.Mysql
 {
     [Category(TestCategories.MySqlTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class MySqlDbUnitTestTest : NDbUnit.Test.Common.DbUnitTestTestBase
     {

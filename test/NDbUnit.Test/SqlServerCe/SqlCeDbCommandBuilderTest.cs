@@ -13,6 +13,8 @@ using System.Data.SqlServerCe;
 namespace NDbUnit.Test.SqlServerCe
 {
     [Category(TestCategories.SqlServerCeTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.WindowsOnlyTests)]
     [TestFixture]
     class SqlCeDbCommandBuilderTest : NDbUnit.Test.Common.DbCommandBuilderTestBase
     {

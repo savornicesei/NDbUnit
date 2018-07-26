@@ -10,9 +10,11 @@ using NDbUnit.Core.MySqlClient;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace NDbUnit.Test.SqlClient
+namespace NDbUnit.Test.Mysql
 {
     [Category(TestCategories.MySqlTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     class MySqlDbCommandBuilderTest : NDbUnit.Test.Common.DbCommandBuilderTestBase
     {

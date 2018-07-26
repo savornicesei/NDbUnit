@@ -10,6 +10,8 @@ using NUnit.Framework;
 namespace NDbUnit.Test.SqlClient
 {
     [Category(TestCategories.SqlServerTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class SqlDbUnitIntegrationTest : IntegationTestBase
     {
         protected override NDbUnit.Core.INDbUnitTest GetNDbUnitTest()

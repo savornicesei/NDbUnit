@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace NDbUnit.Test
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class When_Initial_TableName_Contains_No_Escape_Characters_And_Escape_Characters_Are_Provided
     {

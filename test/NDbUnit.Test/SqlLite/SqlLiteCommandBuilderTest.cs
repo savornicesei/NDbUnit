@@ -14,9 +14,11 @@ using Microsoft.Data.Sqlite;
 using System.Data.SQLite;
 #endif
 
-namespace NDbUnit.Test.SqlClient
+namespace NDbUnit.Test.SqlLite
 {
     [Category(TestCategories.SqliteTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     class SqlLiteCommandBuilderTest : NDbUnit.Test.Common.DbCommandBuilderTestBase
     {

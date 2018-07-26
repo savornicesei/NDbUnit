@@ -8,6 +8,8 @@ using NUnit.Framework;
 
 namespace NDbUnit.Test.ScriptManager
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class WhenInvokingScripts
     {

@@ -14,6 +14,8 @@ using System.Data;
 namespace NDbUnit.Test.Mysql
 {
     [Category(TestCategories.MySqlTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     class MySqlDbOperationTest : NDbUnit.Test.Common.DbOperationTestBase
     {

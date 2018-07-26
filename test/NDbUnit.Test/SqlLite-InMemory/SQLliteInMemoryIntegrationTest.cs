@@ -19,6 +19,8 @@ using System.IO;
 namespace NDbUnit.Test.SqlLite_InMemory
 {
     [Category(TestCategories.SqliteTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class SQLliteInMemoryIntegrationTest
     {

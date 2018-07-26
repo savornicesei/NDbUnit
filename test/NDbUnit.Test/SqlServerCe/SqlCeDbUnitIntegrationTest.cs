@@ -10,6 +10,8 @@ using NUnit.Framework;
 namespace NDbUnit.Test.SqlServerCe
 {
     [Category(TestCategories.SqlServerCeTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.WindowsOnlyTests)]
     public class SqlCeDbUnitIntegrationTest : IntegationTestBase
     {
         protected override NDbUnit.Core.INDbUnitTest GetNDbUnitTest()

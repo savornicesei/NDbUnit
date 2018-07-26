@@ -19,6 +19,8 @@ using System.Data;
 namespace NDbUnit.Test.OracleClient
 {
     [Category(TestCategories.OracleTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class OracleClientDbOperationTest : DbOperationTestBase
     {
         public override void InsertIdentity_Executes_Without_Exception()

@@ -20,6 +20,8 @@ using System.IO;
 namespace NDbUnit.Test.OracleClient
 {
     [Category(TestCategories.OracleTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class OracleClientDbUnitTestTest : DbUnitTestTestBase
     {
         public override IList<string> ExpectedDataSetTableNames

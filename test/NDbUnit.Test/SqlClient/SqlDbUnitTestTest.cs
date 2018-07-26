@@ -12,9 +12,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 
-namespace NDbUnit.Test.SqlServerCe
+namespace NDbUnit.Test.SqlClient
 {
     [Category(TestCategories.SqlServerTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class SqlDbUnitTestTest : NDbUnit.Test.Common.DbUnitTestTestBase
     {

@@ -9,6 +9,8 @@ using NUnit.Framework;
 
 namespace NDbUnit.Test.DataSetComparer
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class When_Comparing_DataSets_With_Different_Data : DataSetComparerTestBase
     {
         [Test]

@@ -10,6 +10,8 @@ using NUnit.Framework;
 namespace NDbUnit.Test.SqlLite
 {
     [Category(TestCategories.SqliteTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class SqlLiteDbUnitIntegrationTest : IntegationTestBase
     {
         protected override NDbUnit.Core.INDbUnitTest GetNDbUnitTest()

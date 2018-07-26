@@ -11,10 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Build", "1. Build", "{11
 		.develop.appveyor.yml = .develop.appveyor.yml
 		.travis.yml = .travis.yml
 		NuGet.config = NuGet.config
-		scripts\build-setup.ps1 = scripts\build-setup.ps1
-		scripts\test-setup-databases.ps1 = scripts\test-setup-databases.ps1
 		src\ndbunit.targets = src\ndbunit.targets
 		src\netfx.props = src\netfx.props
+		NDbUnit.sln.licenseheader = NDbUnit.sln.licenseheader
+		build.sh = build.sh
+		build.ps1 = build.ps1
+		build.cake = build.cake
+		src\SolutionInfo.cs = src\SolutionInfo.cs
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Src", "2. Src", "{7DD0FF84-8EAD-47F0-A208-021413504642}"

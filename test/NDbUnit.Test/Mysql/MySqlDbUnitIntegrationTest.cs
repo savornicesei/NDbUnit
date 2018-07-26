@@ -11,6 +11,8 @@ using NUnit.Framework;
 namespace NDbUnit.Test.Mysql
 {
     [Category(TestCategories.MySqlTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public class MySqlDbUnitIntegrationTest : IntegationTestBase
     {
         protected override INDbUnitTest GetNDbUnitTest()

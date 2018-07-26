@@ -11,6 +11,8 @@ using System.Data;
 
 namespace NDbUnit.Test
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class DataSetTableIteratorTest
     {

@@ -12,6 +12,8 @@ using System.Data;
 
 namespace NDbUnit.Test.Common
 {
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     public abstract class DbCommandBuilderTestBase
     {
         private const int EXPECTED_COUNT_OF_COMMANDS = 3;

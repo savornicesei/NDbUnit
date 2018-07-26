@@ -19,6 +19,8 @@ using System.IO;
 namespace NDbUnit.Test.SqlLite
 {
     [Category(TestCategories.SqliteTests)]
+    [Category(TestCategories.AllTests)]
+    [Category(TestCategories.CrossPlatformTests)]
     [TestFixture]
     public class SqlLiteUnitTestTest : NDbUnit.Test.Common.DbUnitTestTestBase
     {
