@@ -8,6 +8,7 @@ using System.Configuration;
 
 namespace NDbUnit.Test
 {
+    //FIXME: Database connections should be dynamically retrieved so that the tests can be run on multiple versions of the same database
     public static class DbConnection
     {
         public static string PostgresqlConnectionString

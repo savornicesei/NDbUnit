@@ -2,19 +2,52 @@
 // SETUP / TEARDOWN
 ///////////////////////////////////////////////////////////////////////////////
 
+//NOTE: Executed BEFORE the first task.
 Setup(context =>
 {
-    // Executed BEFORE the first task.
-    Information("Building version {0} of {1}.", semVersion, appName);
+    Information("Determine build environment");
+    
+    Information("Determine build version");
+    GitVersion gitVersionResults = GitVersion(new GitVersionSettings());
+
+    branch = gitVersionResults.BranchName;
+    version = gitVersionResults.AssemblySemVer;
+    fileVersion = gitVersionResults.AssemblySemFileVer;
+    informalVersion = gitVersionResults.InformationalVersion;
+    nugetVersion = gitVersionResults.NuGetVersion;
+    buildNumber = gitVersionResults.PreReleaseNumber;
+    fullSemVer = gitVersionResults.FullSemVer;
+
+    //NOTE: load product settings for current CI
+    Information("Determine product settings for current build environment");
+    string settingsFile = string.Empty;
+    if(isAppVeyor)
+    {
+        settingsFile = scriptsDir + "appveyor.settings.json";
+        Information("Remote build on AppVeyor. Using " + settingsFile + " to load settings.");
+    }
+	else if(isTravisCI)
+	{
+		settingsFile = scriptsDir + "travisci.settings.json";
+        Information("Remote build on TravisCI. Using " + settingsFile + " to load settings.");
+	}
+	else //assume it's local
+	{
+		settingsFile = scriptsDir + ".local.settings.json";
+        Information("Local build. Using " + settingsFile + " to load settings.");
+	};
+    if(!FileExists(settingsFile))
+    {
+        throw new Exception("Settings file does not exist!");
+    }
+    productSettings = DeserializeJsonFromFile<ProductSettings>(settingsFile);
+
+    Information("Building version {0} of {1}.", informalVersion, product);
     Information("Target: {0}.", target);
-    Information("Tools dir: {0}.", tools);
-    Information("Username:  {0}", username);
 });
 
-
-
+// NOTE: Executed AFTER the last task.
 Teardown(context =>
 {
-    // Executed AFTER the last task.
-    Information("Finished building version {0} of {1}.", semVersion, appName);
+    Information("Finished building version {0} of {1}.", informalVersion, product);
 });

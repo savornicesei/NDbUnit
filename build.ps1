@@ -21,6 +21,10 @@ The build script target to run.
 The build configuration to use.
 .PARAMETER Verbosity
 Specifies the amount of information to be displayed.
+.PARAMETER CodeQuality
+Run code quality analysis.
+.PARAMETER TestCategory
+List of test categories to be run.
 .PARAMETER ShowDescription
 Shows description about tasks.
 .PARAMETER DryRun
@@ -43,6 +47,7 @@ https://cakebuild.net
 Param(
     [string]$Script = "build.cake",
     [string]$Target,
+    [ValidateSet("Release", "Debug")]
     [string]$Configuration,
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity,

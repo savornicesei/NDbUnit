@@ -1,0 +1,20 @@
+{
+    "UnitTests": {},
+    "IntegrationTests": {
+        "Databases": [
+            {
+                "OS": "Nix",
+                "Host": "localhost",
+                "DbType": "mysql",
+                "Edition": "5.7",
+                "ServiceName": "",
+                "Server": "127.0.0.1",
+                "Port": "",
+                "Path": "",
+                "Username": "travis",
+                "Password": "",
+                "Enabled": false
+            }
+        ]
+    }
+}

@@ -9,6 +9,11 @@
 .vs
 .sonar*
 *.userprefs
+.local.*
+
+#cake
+tools/*
+!tools/packages.config
 
 # Build results
 [Dd]ebug/
